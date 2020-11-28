@@ -1,0 +1,141 @@
+:root {
+    --green: #0ad488;
+    --darkgrey: #333d4d;
+    --darkgrey2: #29313d;
+    --transition-speed: 200ms;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    height:100vh;
+}
+
+/* figure {
+    background-color: var(--green);
+    opacity: 0.85;
+} */
+
+.ufo-header {
+    max-height: 800px;
+    width: 100%;
+
+    opacity: 0.85;
+
+    /* mix-blend-mode: multiply; */
+}
+
+.navbar {
+    background-color: var(--darkgrey);
+    font-size: 20px;
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.navbar-nav {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.nav-item {
+    width: 10rem;
+}
+
+.nav-item:first-child {
+    margin-right: auto;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    height: 5rem;
+    transition: var(--transition-speed);
+}
+
+.nav-link:hover {
+    background: var(--darkgrey2);
+    color: var(--green);
+}
+
+.margin-top {
+    margin-top: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.card {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 1 400px;
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid var(--green);
+    box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 10px;
+}
+
+.member-photo {
+    height: 200px;
+    width: 200px;
+    padding: 1rem;
+    border-radius: 50%;
+}
+
+.card-text {
+    text-transform: capitalize;
+}
+
+.footer {
+    background-color: var(--darkgrey);
+    height: auto;
+    width: 100%;
+    padding: 1rem;
+    color: white;
+    margin-top: auto;
+    display: flex;
+}
+
+#context {
+    flex: 50%;
+}
+
+#copyright {
+    flex: 50%;
+    text-align: right;
+}
