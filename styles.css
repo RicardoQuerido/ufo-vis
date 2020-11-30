@@ -1,3 +1,4 @@
+/* Global Definitions */
 :root {
     --green: #0ad488;
     --darkgrey: #333d4d;
@@ -16,14 +17,24 @@ body {
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
-    height:100vh;
+    height: 100vh;
 }
+
+.margin-top {
+    margin-top: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
 
 /* figure {
     background-color: var(--green);
     opacity: 0.85;
 } */
 
+/* Main Page Header */
 .ufo-header {
     max-height: 800px;
     width: 100%;
@@ -33,6 +44,7 @@ body {
     /* mix-blend-mode: multiply; */
 }
 
+/* Navbar */
 .navbar {
     background-color: var(--darkgrey);
     font-size: 20px;
@@ -69,19 +81,12 @@ body {
     transition: var(--transition-speed);
 }
 
-.nav-link:hover {
+.nav-link:hover, .selected .nav-link{
     background: var(--darkgrey2);
     color: var(--green);
 }
 
-.margin-top {
-    margin-top: 1rem;
-}
-
-.text-center {
-    text-align: center;
-}
-
+/* Main Page Cards */
 .cards {
     display: flex;
     flex-wrap: wrap;
@@ -121,6 +126,7 @@ body {
     text-transform: capitalize;
 }
 
+/* Footer */
 .footer {
     background-color: var(--darkgrey);
     height: auto;
@@ -140,20 +146,20 @@ body {
     text-align: right;
 }
 
-.selected {
-    background-color: var(--darkgrey2);
-}
-
-/* The sidebar menu */
+/* Sidebar Menu */
 .sidenav {
-bottom: 50px; /* Full-height: remove this if you want "auto" height */
-width: 200px; /* Set the width of the sidebar */
-position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-z-index: 1; /* Stay on top */
-top: 80px; /* Stay at the top */
-left: 0;
-background-color: rgba(17, 17, 17, 0.131); /* Black */
-overflow-x: hidden; /* Disable horizontal scroll */
-padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 15rem;
+    background-color: rgba(17, 17, 17, 0.131);
+    padding: 2rem;
 }
 
+.sidenav > * {
+    margin-top: 1rem;
+} 
+
+select {
+    padding: 0.5rem;
+}
