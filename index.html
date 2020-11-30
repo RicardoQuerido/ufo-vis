@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="js/index.js"></script>
     <title>UFOVis</title>
 </head>
 
@@ -42,7 +44,7 @@
             </ul>
         </nav>
         <figure>
-            <img src="ufo.jpg" alt="ufo" class="ufo-header">
+            <img src="images/ufo.jpg" alt="ufo" class="ufo-header">
         </figure>
     </header>
 
@@ -52,21 +54,21 @@
             <article class="card-general">
                 <div class="capitalize">
                     <h3>Total Sightings</h3>
-                    <p>number</p>
+                    <p id="total_sightings">number</p>
                 </div>
                 <i class="far fa-eye"></i>
             </article>
             <article class="card-general">
                 <div class="capitalize">
                     <h3>Most common shape</h3>
-                    <p>shape</p>
+                    <p id="top_shape">shape</p>
                 </div>
                 <i class="fas fa-shapes"></i>
             </article>
             <article class="card-general">
                 <div class="capitalize">
                     <h3>Top country</h3>
-                    <p>country</p>
+                    <p id="top_country">country</p>
                 </div>
                 <i class="far fa-flag"></i>
             </article>
@@ -85,11 +87,11 @@
         <h1 class="text-center">Team</h1>
         <div class="cards-general">
             <article class="card-member">
-                <img class="member-photo" src="ufo.jpg" alt="">
+                <img class="member-photo" src="images/francisco.jpg" alt="">
                 <span class="card-text">Francisco Silveira</span>
             </article>
             <article class="card-member">
-                <img class="member-photo" src="ufo.jpg" alt="">
+                <img class="member-photo" src="images/ufo.jpg" alt="">
                 <span class="card-text">Ricardo Querido</span>
             </article>
         </div>
