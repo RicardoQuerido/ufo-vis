@@ -6,12 +6,31 @@
     --transition-speed: 200ms;
 }
 
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--darkgrey2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--green);
+}
+
+::selection {
+    color: var(--darkgrey2);
+    background: var(--green);
+}
+
 
 body {
     background-color: whitesmoke;
@@ -32,11 +51,9 @@ body {
     text-transform: capitalize;
 }
 
-
-/* figure {
-    background-color: var(--green);
-    opacity: 0.85;
-} */
+.uppercase {
+    text-transform: uppercase;
+}
 
 /* Main Page Header */
 .ufo-header {
@@ -44,8 +61,6 @@ body {
     width: 100%;
 
     opacity: 0.85;
-
-    /* mix-blend-mode: multiply; */
 }
 
 /* Navbar */
@@ -106,10 +121,20 @@ body {
     align-items: center;
     justify-content: space-between;
     flex: 0 1 400px;
-    padding: 1rem;
+    padding: 2rem;
     margin: 1rem;
-    border: 1px solid var(--green);
+    border: 2px solid var(--green);
+    border-radius: 5px;
     box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.card-general i {
+    color: var(--darkgrey);
+}
+
+.card-general i:hover {
+    color: var(--green);
+    transition: var(--transition-speed);
 }
 
 .card-member {

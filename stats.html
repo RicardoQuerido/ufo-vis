@@ -8,7 +8,10 @@
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v5.js"></script>
     <title>UFOVis</title>
+
+    
 </head>
 
 <body>
@@ -43,37 +46,57 @@
         </nav>
     </header>
 
+
     <main>
         <section class="sidenav">
             <span>Shape</span>
-            <select>
+            <select id="shape_filter">
                 <option>All</option>
-                <option>Light</option>
-                <option>Circle</option>
+
             </select>
         </section>
 
         <section class="content">
+
             <div class="cards-plots">
                 <article class="card-plot plot-encounter-duration">
                     <h3>Encounter Duration</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque, nesciunt. Eligendi sequi
+                        praesentium quae ut, cumque earum ullam inventore distinctio aliquid, omnis, veritatis nesciunt
+                        voluptas aliquam sit iure voluptatibus iusto.</p>
+
                 </article>
                 <article class="card-plot plot-shapes">
                     <h3>Shapes</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia
+                        nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere
+                        nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                        Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
+                        veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
                 </article>
                 <article class="card-plot plot-common-words">
                     <h3>Most Common Words</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia
+                        nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere
+                        nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                        Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
+                        veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
                 </article>
                 <article class="card-plot plot-sight-year">
                     <h3>Sightings Per Year</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia
+                        nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere
+                        nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                        Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
+                        veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
                 </article>
                 <article class="card-plot plot-sight-hour">
                     <h3>Sightings Per Hour</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia
+                        nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere
+                        nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                        Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
+                        veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
                 </article>
             </div>
         </section>
@@ -83,6 +106,9 @@
         <span id="context">Work developed in the context of Information Visualization</span>
         <span id="copyright">2020 - All rights reserved</span>
     </footer>
+
+    <!-- Scripts -->
+    <script src="js/stats.js"></script>
 </body>
 
 

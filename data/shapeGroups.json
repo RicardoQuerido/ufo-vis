@@ -1,0 +1,45 @@
+{
+    "Geometric Shapes": [
+        "circle",
+        "oval",
+        "rectangle",
+        "triangle",
+        "hexagon",
+        "round"
+    ],
+    "Geometric Figures": [
+        "cylinder",
+        "sphere",
+        "pyramid"
+    ],
+    "Objects": [
+        "disk",
+        "cigar",
+        "chevron",
+        "delta",
+        "dome",
+        "teardrop",
+        "cross",
+        "diamond",
+        "egg"
+    ],
+    "Light Source": [
+        "light",
+        "fireball",
+        "flare",
+        "flash"
+    ],
+    "In motion": [
+        "changing",
+        "changed",
+        "crescent"
+    ],
+    "Multiple": [
+        "formation"
+    ],
+    "Vague": [
+        "unkwown",
+        "other",
+        ""
+    ]
+}
