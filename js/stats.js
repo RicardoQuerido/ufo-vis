@@ -12,59 +12,72 @@ function createShapeFilters(shapeGroups) {
         shapeList.forEach(shape => {
             let shapeOption = document.createElement("option");
             shapeOption.textContent = shape.charAt(0).toUpperCase() + shape.slice(1);
+            shapeOption.value = shape.toLowerCase();
             newGroup.appendChild(shapeOption);
         });
         shapeFilter.appendChild(newGroup);
     });
 }
 
-
-//TODO: Organizar código.
-//TODO: limpar dados antes de meter no histograma.
-let data = [];
-d3.csv("/data/complete.csv").then(meh => {
-    meh.forEach(d => {
-        const nice = parseInt(d["duration (seconds)"]);
-        if(nice < 300)
-        data.push(nice);
+let processedData = [];
+d3.csv("/data/complete.csv").then(data => {
+    data.forEach(row => {
+        const duration = parseInt(row["duration (seconds)"]);
+        const shape = row.shape;
+        processedData.push({duration, shape});
     })
-    console.log(data);
-    wow();
+    histogramEncounterDuration(processedData, 6, [0,300]);
 });
 
-function wow() {
-    const c = document.getElementById("a");
+//data should come like this: [{duration, shape, date}, ...] (at least)
+//probably filters, data and range will be global in the future
+function histogramEncounterDuration(data, binsCount, rangeFilter = null, shapeFilter = null, dateFilter = null) {
+    if(rangeFilter) {
+        const [start, end] = rangeFilter;
+        data = data.filter(d => d.duration >= start && d.duration <= end);
+    }
+    if(shapeFilter) {
+        data = data.filter(d => d.shape === shapeFilter);
+    }
 
-    let width = c.offsetWidth;
-    let height = c.offsetHeight;
-    
-    let svg = d3.select("#my-chart").append("svg")
+    const durations = data.map(d => d.duration);
+
+    const plotArea = document.getElementById("plot-encounter-duration");
+
+    const width = plotArea.offsetWidth;
+    const height = plotArea.offsetHeight;
+
+    let svg = d3.select("#plot-encounter-duration")
+        .append("svg")
         .attr("viewBox", `0 0 ${width} ${height}`);
-    
+
     // 1rem = 16px
     margin = ({
         top: 16,
-        right: 32,
+        right: 16,
         bottom: 26,
         left: 64
     });
+
     
-    bins = d3.histogram().thresholds(6)(data);
-    
-    console.log(d3.extent(data))
+    bins = d3.histogram().thresholds(binsCount)(durations);
 
     x = d3.scaleLinear()
-        .domain(d3.extent(data))
+        .domain(d3.extent(durations))
         .range([margin.left, width - margin.right])
         .nice();
-    
+
     y = d3.scaleLinear()
-        .domain([0, d3.max(bins, d => d.length)]).nice()
-        .range([height - margin.bottom, margin.top]);
-    
+        .domain([0, d3.max(bins, d => d.length)])
+        .range([height - margin.bottom, margin.top])
+        .nice();
+
     xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).ticks(10).tickFormat(t => {if(t%6) return; return t;}).tickSizeOuter(0))
+        .call(d3.axisBottom(x).ticks(10).tickFormat(t => {
+            if (t % 6) return;
+            return t;
+        }).tickSizeOuter(0))
         .attr("font-size", "1rem")
         .call(g => g.append("text")
             .attr("x", width - margin.right)
@@ -73,8 +86,8 @@ function wow() {
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
             .attr("font-size", "1rem")
-            .text("lmao"))
-    
+            .text("duration(s)"));
+
     yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).ticks(height / 40))
@@ -85,10 +98,10 @@ function wow() {
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
             .attr("font-size", "1rem")
-            .text("nice"))
-    
+            .text("sightings"));
+
     svg.append("g")
-        .attr("fill", "purple")
+        .attr("fill", "#0ad488")
         .selectAll("rect")
         .data(bins)
         .join("rect")
@@ -96,10 +109,16 @@ function wow() {
         .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
         .attr("y", d => y(d.length))
         .attr("height", d => y(0) - y(d.length));
-    
+
     svg.append("g")
         .call(xAxis);
-    
+
     svg.append("g")
         .call(yAxis);
 }
+
+document.getElementById("shape_filter").addEventListener("change", (e) => {
+    d3.selectAll("svg").remove();
+    histogramEncounterDuration(processedData, 6, [0,300], shapeFilter=e.target.value);
+    //this might change to histogramEncounterDuration(6);
+});

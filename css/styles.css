@@ -1,7 +1,8 @@
 /* Global Definitions */
 :root {
-    --green: #0ad488;
-    --darkgrey: #333d4d;
+    --primary: #17e1f0;
+    /* --green: #0ad488; */
+    --darkgrey: #455164;
     --darkgrey2: #29313d;
     --transition-speed: 200ms;
 }
@@ -23,12 +24,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--green);
+    background: var(--primary);
 }
 
 ::selection {
     color: var(--darkgrey2);
-    background: var(--green);
+    background: var(--primary);
 }
 
 
@@ -103,7 +104,7 @@ body {
 .nav-link:hover,
 .selected .nav-link {
     background: var(--darkgrey2);
-    color: var(--green);
+    color: var(--primary);
 }
 
 /* Main Page Cards */
@@ -123,7 +124,7 @@ body {
     flex: 0 1 400px;
     padding: 2rem;
     margin: 1rem;
-    border: 2px solid var(--green);
+    border: 2px solid var(--primary);
     border-radius: 5px;
     box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
 }
@@ -133,7 +134,7 @@ body {
 }
 
 .card-general i:hover {
-    color: var(--green);
+    color: var(--primary);
     transition: var(--transition-speed);
 }
 
@@ -179,18 +180,6 @@ body {
     }
 }
 
-.card-plot {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-between;
-    padding: 1rem;
-    margin: 1rem;
-    border: 1px solid var(--green);
-    box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
-}
-
 .plot-encounter-duration {
     grid-area: a;
 }
@@ -209,6 +198,25 @@ body {
 
 .plot-sight-hour {
     grid-area: e;
+}
+
+.card-plot {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid var(--primary);
+    box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.card-plot-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 main {
@@ -237,7 +245,7 @@ select {
 }
 
 select:focus {
-    border: 2px solid var(--green);
+    border: 2px solid var(--primary);
 }
 
 /* Content */
