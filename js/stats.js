@@ -42,12 +42,12 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null, shapeFi
 
     const durations = data.map(d => d.duration);
 
-    const plotArea = document.getElementById("plot-encounter-duration");
+    const plotArea = document.getElementById("plot_encounter_duration");
 
     const width = plotArea.offsetWidth;
     const height = plotArea.offsetHeight;
 
-    let svg = d3.select("#plot-encounter-duration")
+    let svg = d3.select("#plot_encounter_duration")
         .append("svg")
         .attr("viewBox", `0 0 ${width} ${height}`);
 

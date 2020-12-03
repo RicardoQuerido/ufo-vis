@@ -1,8 +1,10 @@
 /* Global Definitions */
 :root {
-    --primary: #17e1f0;
+    --primary: #F7C8AC;
+    /* --primary: #F9C299; */
     /* --green: #0ad488; */
-    --darkgrey: #455164;
+    --darkgrey: #4A6986;
+    /* --darkgrey: #455164; */
     --darkgrey2: #29313d;
     --transition-speed: 200ms;
 }
@@ -37,8 +39,9 @@ body {
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100vh;   
 }
+
 
 .margin-top {
     margin-top: 1rem;
@@ -57,21 +60,56 @@ body {
 }
 
 /* Main Page Header */
-.ufo-header {
-    max-height: 800px;
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("../images/ufo1.jpg");
+    background-position: 50% 80%;
+    background-repeat: no-repeat;
+    height: 92vh;
     width: 100%;
+    object-position: 0 80%;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+}
 
-    opacity: 0.85;
+.main-home {
+    padding: 3rem;
+}
+
+/* Main Page About */
+.about {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.about-text {
+    flex: 1 1 50ch;
+    margin: 2rem;
+}
+
+.about-image {
+    max-height: 50vh;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 /* Navbar */
 .navbar {
     background-color: var(--darkgrey);
-    font-size: 20px;
+    font-size: 1.2rem;
     padding: 0 1rem;
     position: sticky;
     top: 0;
     z-index: 1;
+    border-bottom: 1px dotted var(--darkgrey2);
 }
 
 .navbar-nav {
@@ -83,7 +121,7 @@ body {
 }
 
 .nav-item {
-    width: 10rem;
+    width: 8rem;
 }
 
 .nav-item:first-child {
@@ -143,13 +181,12 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 1rem;
-    margin: 10px;
 }
 
 .member-photo {
     height: 200px;
     width: 200px;
-    padding: 1rem;
+    padding: 0.8rem;
     border-radius: 50%;
 }
 
@@ -219,7 +256,7 @@ body {
     justify-content: space-between;
 }
 
-main {
+.main-stats {
     display: flex;
 }
 
