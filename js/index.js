@@ -1,5 +1,6 @@
 let topCountries = new Map();
 let topShapes = new Map();
+let countries = new Map();
 let totalSightings = 0;
 
 d3.csv("/data/complete.csv").then(function (data) {
@@ -18,12 +19,22 @@ d3.csv("/data/complete.csv").then(function (data) {
     });
 
 
-    // Sort by value
-    topCountries = new Map([...topCountries.entries()].sort((a, b) => b[1] - a[1]))
-    topShapes = new Map([...topShapes.entries()].sort((a, b) => b[1] - a[1]));
+    d3.csv("/data/countries.csv").then(function (data) {
+        data.forEach(function (d) {
+            countries.set(d.Code.toLowerCase(), d.Name);
+        });
 
-    // Bind to html
-    document.getElementById('top_country').innerHTML = topCountries.entries().next().value[0];
-    document.getElementById('top_shape').innerHTML = topShapes.entries().next().value[0];
-    document.getElementById('total_sightings').innerHTML = totalSightings;
+        // Sort by value
+        topCountries = new Map([...topCountries.entries()].sort((a, b) => b[1] - a[1]))
+        topShapes = new Map([...topShapes.entries()].sort((a, b) => b[1] - a[1]));
+    
+        // Bind to html
+        document.getElementById('top_country').innerHTML = countries.get(topCountries.entries().next().value[0]);
+        document.getElementById('top_shape').innerHTML = topShapes.entries().next().value[0];
+        document.getElementById('total_sightings').innerHTML = totalSightings;
+
+    });
+
+    
 });
+
