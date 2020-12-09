@@ -18,6 +18,7 @@ d3.csv("/data/complete.csv").then(function (data) {
         totalSightings += 1;
     });
 
+    // Get country corresponding name by codename (e.g. US)
 
     d3.csv("/data/countries.csv").then(function (data) {
         data.forEach(function (d) {
