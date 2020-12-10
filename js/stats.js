@@ -106,7 +106,7 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
 
     yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(height / 40))
+        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
         .attr("font-size", "1rem")
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
@@ -181,7 +181,7 @@ function plotSightYear() {
         .range([margin.left, width - margin.right])
         .nice();
 
-        y = d3.scaleLinear()
+    y = d3.scaleLinear()
         .domain([0, d3.max(years.map(d => d[1]))])
         .range([height - margin.bottom, margin.top])
         .nice();
@@ -201,7 +201,7 @@ function plotSightYear() {
 
     yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(height / 40))
+        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
         .attr("font-size", "1rem")
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
@@ -284,7 +284,7 @@ function histogramSightHour() {
 
     yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(height / 40))
+        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
         .attr("font-size", "1rem")
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
