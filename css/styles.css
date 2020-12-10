@@ -1,11 +1,8 @@
 /* Global Definitions */
 :root {
-    --primary: #F7C8AC;
-    /* --primary: #F9C299; */
-    /* --green: #0ad488; */
-    --darkgrey: #4A6986;
-    /* --darkgrey: #455164; */
-    --darkgrey2: #29313d;
+    --accent: #F7C8AC;
+    --dark: #29313d;
+    --dark2: #2d4153;
     --transition-speed: 200ms;
 }
 
@@ -22,16 +19,16 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--darkgrey2);
+    background: var(--dark2);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary);
+    background: var(--accent);
 }
 
 ::selection {
-    color: var(--darkgrey2);
-    background: var(--primary);
+    color: var(--dark2);
+    background: var(--accent);
 }
 
 
@@ -103,13 +100,13 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: var(--darkgrey);
+    background-color: var(--dark);
     font-size: 1.2rem;
     padding: 0 1rem;
     position: sticky;
     top: 0;
     z-index: 1;
-    border-bottom: 1px dotted var(--darkgrey2);
+    border-bottom: 1px dotted var(--dark2);
 }
 
 .navbar-nav {
@@ -141,8 +138,8 @@ body {
 
 .nav-link:hover,
 .selected .nav-link {
-    background: var(--darkgrey2);
-    color: var(--primary);
+    background: var(--dark2);
+    color: var(--accent);
 }
 
 /* Main Page Cards */
@@ -162,17 +159,17 @@ body {
     flex: 0 1 400px;
     padding: 2rem;
     margin: 1rem;
-    border: 2px solid var(--primary);
+    border: 2px solid var(--accent);
     border-radius: 5px;
     box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
 }
 
 .card-general i {
-    color: var(--darkgrey);
+    color: var(--dark);
 }
 
 .card-general i:hover {
-    color: var(--primary);
+    color: var(--accent);
     transition: var(--transition-speed);
 }
 
@@ -245,7 +242,7 @@ body {
     justify-content: space-between;
     padding: 1rem;
     margin: 1rem;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--accent);
     box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
 }
 
@@ -276,13 +273,13 @@ body {
 
 /* Filters */
 select {
-    border: 2px solid var(--darkgrey);
+    border: 2px solid var(--dark);
     border-radius: 5px;
     padding: 0.5rem;
 }
 
 select:focus {
-    border: 2px solid var(--primary);
+    border: 2px solid var(--accent);
 }
 
 /* Content */
@@ -293,7 +290,7 @@ select:focus {
 
 /* Footer */
 .footer {
-    background-color: var(--darkgrey);
+    background-color: var(--dark);
     width: 100%;
     padding: 1rem;
     color: white;

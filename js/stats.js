@@ -19,7 +19,10 @@ function createShapeFilters(shapeGroups) {
     });
 }
 
+// global data and global filters
 let processedData = [];
+let shapeFilter = null;
+let dateFilter = null;
 d3.csv("/data/complete.csv").then(data => {
     data.forEach(row => {
         const duration = parseInt(row["duration (seconds)"]);
@@ -32,19 +35,22 @@ d3.csv("/data/complete.csv").then(data => {
             time
         });
     })
-    histogramEncounterDuration(processedData, 6, [0, 300]);
-    histogramSightHour(processedData, 24, [0, 24]);
+    histogramEncounterDuration(6, [0, 300]);
+    histogramSightHour();
 });
 
-//data should come like this: [{duration, shape, date}, ...] (at least)
-//probably filters, data and range will be global in the future
-function histogramEncounterDuration(data, binsCount, rangeFilter = null, shapeFilter = null, dateFilter = null) {
+function histogramEncounterDuration(binsCount, rangeFilter = null) {
+    let data = processedData;
+
+    // global filters
+    if (shapeFilter) {
+        data = data.filter(d => d.shape === shapeFilter);
+    }
+
+    // local filters
     if (rangeFilter) {
         const [start, end] = rangeFilter;
         data = data.filter(d => d.duration >= start && d.duration <= end);
-    }
-    if (shapeFilter) {
-        data = data.filter(d => d.shape === shapeFilter);
     }
 
     const durations = data.map(d => d.duration);
@@ -55,7 +61,7 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null, shapeFi
     const height = plotArea.offsetHeight;
 
     // 1rem = 16px
-    margin = ({
+    const margin = ({
         top: 16,
         right: 16,
         bottom: 26,
@@ -124,7 +130,11 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null, shapeFi
         .call(yAxis);
 }
 
-function histogramSightHour(data, binsCount, rangeFilter = null, shapeFilter = null, dateFilter = null) {
+function histogramSightHour() {
+    let data = processedData;
+    const binsCount = 24;
+
+    // global filters
     if (shapeFilter) {
         data = data.filter(d => d.shape === shapeFilter);
     }
@@ -137,7 +147,7 @@ function histogramSightHour(data, binsCount, rangeFilter = null, shapeFilter = n
     const height = plotArea.offsetHeight;
 
     // 1rem = 16px
-    margin = ({
+    const margin = ({
         top: 16,
         right: 16,
         bottom: 26,
@@ -154,7 +164,7 @@ function histogramSightHour(data, binsCount, rangeFilter = null, shapeFilter = n
     bins = d3.histogram().thresholds(binsCount)(hours);
 
     x = d3.scaleLinear()
-        .domain(rangeFilter)
+        .domain([0,24])
         .range([margin.left, width - margin.right])
         .nice();
 
@@ -207,8 +217,8 @@ function histogramSightHour(data, binsCount, rangeFilter = null, shapeFilter = n
 
 
 document.getElementById("shape_filter").addEventListener("change", (e) => {
+    shapeFilter = e.target.value;
     d3.selectAll("svg").remove();
-    histogramEncounterDuration(processedData, 6, [0, 300], shapeFilter = e.target.value);
-    histogramSightHour(processedData, 24, [0, 24], shapeFilter = e.target.value);
-    //this might change to histogramEncounterDuration(6);
+    histogramEncounterDuration(6, [0, 300]);
+    histogramSightHour();
 });
