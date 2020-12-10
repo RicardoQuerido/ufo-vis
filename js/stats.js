@@ -1,23 +1,6 @@
 d3.json("/data/shapeGroups.json").then(data => {
-    createShapeFilters(data);
+    createShapeFilters("shape_filter", data);
 });
-
-function createShapeFilters(shapeGroups) {
-    let shapeFilter = document.getElementById('shape_filter');
-
-    Object.entries(shapeGroups).forEach(groups => {
-        let newGroup = document.createElement("optgroup");
-        const [shapeGroup, shapeList] = groups;
-        newGroup.label = shapeGroup;
-        shapeList.forEach(shape => {
-            let shapeOption = document.createElement("option");
-            shapeOption.textContent = shape.charAt(0).toUpperCase() + shape.slice(1);
-            shapeOption.value = shape.toLowerCase();
-            newGroup.appendChild(shapeOption);
-        });
-        shapeFilter.appendChild(newGroup);
-    });
-}
 
 // global data and global filters
 let processedData = [];
@@ -42,79 +25,35 @@ d3.csv("/data/complete.csv").then(data => {
 
 
 function histogramEncounterDuration(binsCount, rangeFilter = null) {
-    let data = processedData;
+    // apply global filters
+    let data = applyGobalFilters(processedData);
 
-    // global filters
-    if (shapeFilter) {
-        data = data.filter(d => d.shape === shapeFilter);
-    }
-
-    // local filters
+    // apply local filters
     if (rangeFilter) {
         const [start, end] = rangeFilter;
         data = data.filter(d => d.duration >= start && d.duration <= end);
     }
 
+    // process data for plot
     const durations = data.map(d => d.duration);
 
-    const plotArea = document.getElementById("plot_encounter_duration");
-
-    const width = plotArea.offsetWidth;
-    const height = plotArea.offsetHeight;
-
-    // 1rem = 16px
-    const margin = ({
-        top: 16,
-        right: 16,
-        bottom: 26,
-        left: 64
-    });
-
-    let svg = d3.select("#plot_encounter_duration")
-        .append("svg")
-        .attr("height", "100%")
-        .attr("preserveAspectRatio", "none")
-        .attr("viewBox", `0 0 ${width} ${height}`);
-
+    // create plot
     bins = d3.histogram().thresholds(binsCount)(durations);
 
-    x = d3.scaleLinear()
-        .domain(d3.extent(durations))
-        .range([margin.left, width - margin.right])
-        .nice();
+    const [width, height, margin] = createPlotBox("plot_encounter_duration");
 
-    y = d3.scaleLinear()
-        .domain([0, d3.max(bins, d => d.length)])
-        .range([height - margin.bottom, margin.top])
-        .nice();
+    let svg = createSVG("plot_encounter_duration", width, height);
 
-    xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).ticks(10).tickFormat(t => {
-            if (t % 6) return;
-            return t;
-        }).tickSizeOuter(0))
-        .attr("font-size", "1rem")
-        .call(g => g.append("text")
-            .attr("x", width - margin.right)
-            .attr("y", -4)
-            .attr("fill", "currentColor")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "end")
-            .attr("font-size", "1rem")
-            .text("durations"));
+    const [xAxis, yAxis] = createXYAxis(
+        width, height, margin,
+        d3.extent(durations),
+        [0, d3.max(bins, d => d.length)],
+        "durations",
+        "sightings",
+        {xTicks:12}
+    );
 
-    yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
-        .attr("font-size", "1rem")
-        .call(g => g.select(".tick:last-of-type text").clone()
-            .attr("x", 4)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .attr("font-size", "1rem")
-            .text("sightings"));
-
+    // append to SVG
     svg.append("g")
         .attr("fill", "#625656")
         .selectAll("rect")
@@ -133,13 +72,10 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
 }
 
 function plotSightYear() {
-    let data = processedData;
+    // apply global filters
+    let data = applyGobalFilters(processedData);
 
-    // global filters
-    if (shapeFilter) {
-        data = data.filter(d => d.shape === shapeFilter);
-    }
-
+    // process data for plot
     years = new Map();
     data.forEach(d => {
         const year = parseInt(d.date.split("/")[2]);
@@ -150,66 +86,26 @@ function plotSightYear() {
         }
     })
     years = Array.from(years);
-    years.sort();    
+    years.sort();
 
-    const plotArea = document.getElementById("plot_sight_year");
-
-    const width = plotArea.offsetWidth;
-    const height = plotArea.offsetHeight;
-
-    // 1rem = 16px
-    const margin = ({
-        top: 16,
-        right: 32,
-        bottom: 26,
-        left: 64
-    });
-
-    let svg = d3.select("#plot_sight_year")
-        .append("svg")
-        .attr("height", "100%")
-        .attr("preserveAspectRatio", "none")
-        .attr("viewBox", `0 0 ${width} ${height}`);
-
+    // create plot
     line = d3.line()
         .x(d => x(d[0]))
         .y(d => y(d[1]))
 
+    const [width, height, margin] = createPlotBox("plot_sight_year", {right:32});
 
-    x = d3.scaleLinear()
-        .domain(d3.extent(years.map(d => d[0])))
-        .range([margin.left, width - margin.right])
-        .nice();
+    let svg = createSVG("plot_sight_year", width, height);
 
-    y = d3.scaleLinear()
-        .domain([0, d3.max(years.map(d => d[1]))])
-        .range([height - margin.bottom, margin.top])
-        .nice();
+    const [xAxis, yAxis] = createXYAxis(
+        width, height, margin,
+        d3.extent(years.map(d => d[0])),
+        [0, d3.max(years.map(d => d[1]))],
+        "years",
+        "sightings",
+    );
 
-    xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0))
-        .attr("font-size", "1rem")
-        .call(g => g.append("text")
-            .attr("x", width - margin.right)
-            .attr("y", -4)
-            .attr("fill", "currentColor")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "end")
-            .attr("font-size", "1rem")
-            .text("years"));
-
-    yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
-        .attr("font-size", "1rem")
-        .call(g => g.select(".tick:last-of-type text").clone()
-            .attr("x", 4)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .attr("font-size", "1rem")
-            .text("sightings"));
-
+    // append to SVG
     svg.append("path")
         .datum(years)
         .attr("fill", "none")
@@ -227,72 +123,30 @@ function plotSightYear() {
 }
 
 function histogramSightHour() {
-    let data = processedData;
+    // apply global filters
+    let data = applyGobalFilters(processedData);
     const binsCount = 24;
 
-    // global filters
-    if (shapeFilter) {
-        data = data.filter(d => d.shape === shapeFilter);
-    }
-
+    // process data for plot
     const hours = data.map(d => parseInt(d.time.split(":")[0]));
 
-    const plotArea = document.getElementById("plot_sight_hour");
-
-    const width = plotArea.offsetWidth;
-    const height = plotArea.offsetHeight;
-
-    // 1rem = 16px
-    const margin = ({
-        top: 16,
-        right: 16,
-        bottom: 26,
-        left: 64
-    });
-
-    let svg = d3.select("#plot_sight_hour")
-        .append("svg")
-        .attr("height", "100%")
-        .attr("preserveAspectRatio", "none")
-        .attr("viewBox", `0 0 ${width} ${height}`);
-
-
+    // create plot
     bins = d3.histogram().thresholds(binsCount)(hours);
 
-    x = d3.scaleLinear()
-        .domain([0, 24])
-        .range([margin.left, width - margin.right])
-        .nice();
+    const [width, height, margin] = createPlotBox("plot_sight_hour");
 
-    y = d3.scaleLinear()
-        .domain([0, d3.max(bins, d => d.length)])
-        .range([height - margin.bottom, margin.top])
-        .nice();
+    let svg = createSVG("plot_sight_hour", width, height);
 
-    xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).ticks(24).tickSizeOuter(0))
-        .attr("font-size", "1rem")
-        .call(g => g.append("text")
-            .attr("x", width - margin.right)
-            .attr("y", -4)
-            .attr("fill", "currentColor")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "end")
-            .attr("font-size", "1rem")
-            .text("hours"));
+    const [xAxis, yAxis] = createXYAxis(
+        width, height, margin,
+        [0, binsCount],
+        [0, d3.max(bins, d => d.length)],
+        "hours",
+        "sightings",
+        {xTicks:24}
+    );
 
-    yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickValues(y.ticks().filter(tick => Number.isInteger(tick))).tickFormat(d3.format('d')))
-        .attr("font-size", "1rem")
-        .call(g => g.select(".tick:last-of-type text").clone()
-            .attr("x", 4)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .attr("font-size", "1rem")
-            .text("sightings"));
-
+    // append to SVG
     svg.append("g")
         .attr("fill", "#B7A8C1")
         .selectAll("rect")
