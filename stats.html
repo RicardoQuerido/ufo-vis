@@ -9,6 +9,7 @@
         crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
     <title>UFOVis</title>
 
 
@@ -74,13 +75,11 @@
                         Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
                         veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
                 </article>
-                <article class="card-plot plot-common-words">
-                    <h3>Most Common Words</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit temporibus saepe nostrum mollitia
-                        nobis vitae, optio perferendis molestiae, natus culpa eos impedit nesciunt doloribus facere
-                        nulla illo minima ipsam commodi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                        Quibusdam obcaecati expedita consequuntur consequatur dolorem illo ex minus nemo labore, quidem
-                        veniam tenetur. Obcaecati consequatur nisi laudantium voluptates placeat atque qui!</p>
+                <article class="card-plot plot-common-words" id="plot_description">
+                    <div class="card-plot-header">
+                        <h3>Most Common Words</h3>
+                        <i class="far fa-lg fa-question-circle"></i>
+                    </div>
                 </article>
                 <article class="card-plot plot-sight-year" id="plot_sight_year">
                     <div class="card-plot-header">

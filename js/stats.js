@@ -2,6 +2,8 @@ d3.json("/data/shapeGroups.json").then(data => {
     createShapeFilters("shape_filter", data);
 });
 
+
+
 // global data and global filters
 let processedData = [];
 let shapeFilter = null;
@@ -11,15 +13,19 @@ d3.csv("/data/complete.csv").then(data => {
         const duration = parseInt(row["duration (seconds)"]);
         const shape = row.shape;
         const [date, time] = row.datetime.split(" ");
+        const description = row.comments;
         processedData.push({
             duration,
             shape,
             date,
-            time
+            time,
+            description
         });
     })
     histogramEncounterDuration(6, [0, 300]);
+    wordCloudDescription();
     plotSightYear();
+
     histogramSightHour();
 });
 
@@ -49,8 +55,9 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
         d3.extent(durations),
         [0, d3.max(bins, d => d.length)],
         "durations",
-        "sightings",
-        {xTicks:12}
+        "sightings", {
+            xTicks: 12
+        }
     );
 
     // append to SVG
@@ -71,12 +78,77 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
         .call(yAxis);
 }
 
+function wordCloudDescription() {
+    // apply global filters
+    let data = applyGobalFilters(processedData);
+
+    let allWords = new Map();
+
+    d3.json("/data/stopwords.json").then(d0 => {
+        const stopWords = new Set(d0);
+
+        data.forEach(d => {
+            const tokens = d.description.trim().split(" ")
+                .map(w => w.toLowerCase())
+                .filter(w => w && !stopWords.has(w))
+
+            tokens.forEach(word => {
+                if (allWords.has(word)) {
+                    allWords.set(word, allWords.get(word) + 1);
+                } else {
+                    allWords.set(word, 1);
+                }
+            })
+        })
+
+        allWords = Array.from(allWords).map(d => {
+            return {
+                text:d[0],
+                value:d[1]
+            };
+        }).filter(d => {
+            return d.value > 5000;
+        });
+
+        const [width, height, margin] = createPlotBox("plot_description");
+
+        let svg = createSVG("plot_description", width, height);
+
+        const layout = d3.layout.cloud()
+            .size([width, height])
+            .words(allWords)
+            .rotate(function () {
+                return ~~(Math.random() * 2) * 90;
+            })
+            .on("end", (words) => {
+                svg.append("g")
+                    .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                    .selectAll("text")
+                    .data(words)
+                    .enter()
+                    .append("text")
+                    .text((d) => d.text)
+                    .style("font-size", (d) => d.size + "px")
+                    .style("font-family", (d) => d.font)
+                    .style("fill", () => '#'+(Math.random()*0xFFFFFF<<0).toString(16))
+                    .attr("text-anchor", "middle")
+                    .attr("transform", (d) => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")");
+            });
+
+        layout.start();
+
+    })
+
+
+
+}
+
 function plotSightYear() {
     // apply global filters
     let data = applyGobalFilters(processedData);
 
     // process data for plot
-    years = new Map();
+    let years = new Map();
     data.forEach(d => {
         const year = parseInt(d.date.split("/")[2]);
         if (years.has(year)) {
@@ -93,7 +165,9 @@ function plotSightYear() {
         .x(d => x(d[0]))
         .y(d => y(d[1]))
 
-    const [width, height, margin] = createPlotBox("plot_sight_year", {right:32});
+    const [width, height, margin] = createPlotBox("plot_sight_year", {
+        right: 32
+    });
 
     let svg = createSVG("plot_sight_year", width, height);
 
@@ -142,8 +216,9 @@ function histogramSightHour() {
         [0, binsCount],
         [0, d3.max(bins, d => d.length)],
         "hours",
-        "sightings",
-        {xTicks:24}
+        "sightings", {
+            xTicks: 24
+        }
     );
 
     // append to SVG
