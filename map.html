@@ -8,6 +8,23 @@
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="//d3js.org/d3.v5.min.js"></script>
+    
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    
+    <script src="js/utils/spin.min.js" charset="utf-8"></script>
+    <script src="js/utils/leaflet.spin.min.js" charset="utf-8"></script>
+    <script src="js/utils/filterUtils.js"></script>
+    <script src="js/map.js"></script>
     <title>UFOVis</title>
 </head>
 
@@ -43,17 +60,30 @@
         </nav>
     </header>
 
-    <main>
+    <main class="main-stats">
         <section class="sidenav">
             <span>Shape</span>
-            <select>
+            <select id="shape_filter">
                 <option>All</option>
-                <option>Light</option>
-                <option>Circle</option>
+            </select>
+            <span>Number of results</span>
+            <select id="nr_results">
+                <option>5000</option>
+                <option>10000</option>
+                <option>25000</option>
+                <option>All(76 314)</option>
             </select>
         </section>
 
         <section class="content">
+            <article   cle class="card-plot" id="">
+                <div class="card-plot-header">
+                    <h3>Global Sightings</h3>
+                    <i class="far fa-lg fa-question-circle"></i>
+                </div>
+                <div id="mapid"></div>
+            </article>
+            
             
         </section>
 

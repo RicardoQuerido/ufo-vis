@@ -284,9 +284,13 @@ select:focus {
 
 /* Content */
 .content {
-    flex: 1 1 85%;
+    flex: 1 1 80%;
 }
 
+#mapid { 
+    height: 480px;
+    margin: 50px;
+}
 
 /* Footer */
 .footer {
