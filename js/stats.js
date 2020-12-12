@@ -8,6 +8,7 @@ d3.json("/data/shapeGroups.json").then(data => {
 let processedData = [];
 let shapeFilter = null;
 let dateFilter = null;
+
 d3.csv("/data/complete.csv").then(data => {
     data.forEach(row => {
         const duration = parseInt(row["duration (seconds)"]);
@@ -23,9 +24,9 @@ d3.csv("/data/complete.csv").then(data => {
         });
     })
     histogramEncounterDuration(6, [0, 300]);
+    donutShapes();
     wordCloudDescription();
     plotSightYear();
-
     histogramSightHour();
 });
 
@@ -56,7 +57,8 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
         [0, d3.max(bins, d => d.length)],
         "durations",
         "sightings", {
-            xTicks: 12
+            xTicks: 12,
+            yTicks: 8
         }
     );
 
@@ -76,6 +78,74 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
 
     svg.append("g")
         .call(yAxis);
+}
+
+function donutShapes() {
+    // apply global filters
+    let data = applyGobalFilters(processedData);
+
+    // process data for plot
+    let shapes = new Map();
+    data.forEach(d => {
+        const shape = d.shape;
+        if (shapes.has(shape)) {
+            shapes.set(shape, shapes.get(shape) + 1);
+        } else {
+            shapes.set(shape, 1);
+        }
+    })
+    shapes = Array.from(shapes);
+
+    const [width, height, margin] = createPlotBox("plot_shapes");
+
+    let svg = d3.select(`#plot_shapes`)
+        .append("svg")
+        .attr("height", "100%")
+        .attr("preserveAspectRatio", "none")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+        let radius = Math.min(width, height) / 2 - margin.top
+
+    // Compute the position of each group on the pie:
+    let pie = d3.pie()
+        .value(function (d) {
+            return d[1];
+        })
+        let data_ready = pie(shapes)
+
+    let arc = d3.arc()
+        .innerRadius(radius * 0.5)
+        .outerRadius(radius * 0.8)
+
+    svg
+        .selectAll('allSlices')
+        .data(data_ready)
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', () => '#' + (Math.random() * 0xFFFFFF << 0).toString(16))
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("opacity", 0.7)
+
+    svg
+        .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('text')
+        .text(function (d) {
+            return d.data[1]/data.length > 0.05 ? d.data[0] : "";
+        })
+        .attr("transform", function (d) {
+            return "translate(" + arc.centroid(d) + ")";
+        })
+        .style("text-anchor", "middle")
+        .style("font-size", 17)
+
+
 }
 
 function wordCloudDescription() {
@@ -103,11 +173,11 @@ function wordCloudDescription() {
 
         allWords = Array.from(allWords).map(d => {
             return {
-                text:d[0],
-                value:d[1]
+                text: d[0],
+                value: d[1]
             };
         }).filter(d => {
-            return d.value > 5000;
+            return d.value > 1000;
         });
 
         const [width, height, margin] = createPlotBox("plot_description");
@@ -130,7 +200,7 @@ function wordCloudDescription() {
                     .text((d) => d.text)
                     .style("font-size", (d) => d.size + "px")
                     .style("font-family", (d) => d.font)
-                    .style("fill", () => '#'+(Math.random()*0xFFFFFF<<0).toString(16))
+                    .style("fill", () => '#' + (Math.random() * 0xFFFFFF << 0).toString(16))
                     .attr("text-anchor", "middle")
                     .attr("transform", (d) => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")");
             });
@@ -244,6 +314,8 @@ document.getElementById("shape_filter").addEventListener("change", (e) => {
     shapeFilter = e.target.value;
     d3.selectAll("svg").remove();
     histogramEncounterDuration(6, [0, 300]);
+    donutShapes();
+    wordCloudDescription();
     plotSightYear();
     histogramSightHour();
 });

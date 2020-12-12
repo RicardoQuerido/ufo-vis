@@ -1,8 +1,12 @@
 // plot creation functions
 function applyGobalFilters(data) {
+    // TODO: Number limit filter
+    
     if (shapeFilter) {
         data = data.filter(d => d.shape === shapeFilter);
     }
+
+    // TODO: Date Filter
 
     return data;
 }
