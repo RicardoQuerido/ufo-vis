@@ -42,10 +42,10 @@ class Sighting {
 let encounters = [];
 
 let shape = "All";
-let startDate = 1945;
-let endDate = 2020;
-let startTime = 02;
-let endTime = 20;
+let startDate = 1906;
+let endDate = 2014;
+let startTime = 00;
+let endTime = 24;
 // Clustering
 let markers = L.markerClusterGroup();
 var pruneCluster = new PruneClusterForLeaflet();
@@ -70,7 +70,7 @@ d3.csv("/data/countries.csv").then(function (data) {
 window.onload = function() {
 
   // Create map instance
-  mymap = L.map('mapid').setView([51.505, -0.09], 1.5);
+  mymap = L.map('mapid').setView([30, 0], 1.5);
   // Add tile layer to the map
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -116,7 +116,7 @@ window.onload = function() {
       range: true,
       min: 1906,
       max: 2014,
-      values: [ 1920, 2000 ],
+      values: [ 1906, 2014 ],
       slide: function( event, ui ) {
         $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
       },
@@ -135,10 +135,10 @@ window.onload = function() {
       range: true,
       min: 00,
       max: 24,
-      values: [ 02, 20 ],
+      values: [ 00, 24 ],
       create: function( event, ui ) {
-        let start = 02;
-        let end = 20;
+        let start = 00;
+        let end = 24;
         if (start < 10) {
           start = '0'+start;
         }

@@ -6,7 +6,6 @@
     --transition-speed: 200ms;
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -62,7 +61,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-image: url("../images/ufo1.jpg");
+    background-image: url("../images/ufo.jpg");
     background-position: 50% 80%;
     background-repeat: no-repeat;
     height: 92vh;
@@ -82,13 +81,29 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
     padding: 1rem;
 }
 
 .about-text {
     flex: 1 1 50ch;
-    margin: 2rem;
+    margin: 2rem 0;
+    font-size: 1.25rem;
+}
+
+.about-text p {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.about-text a {
+    color: var(--accent);
+    transition: var(--transition-speed);
+}
+
+.about-text a:hover {
+    color: var(--dark2);
+    text-decoration: none;
 }
 
 .about-image {
@@ -118,7 +133,7 @@ body {
 }
 
 .nav-item {
-    width: 8rem;
+    width: 10rem;
 }
 
 .nav-item:first-child {
@@ -140,6 +155,20 @@ body {
 .selected .nav-link {
     background: var(--dark2);
     color: var(--accent);
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+
+}
+
+.logo img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    margin-right: 1rem;
 }
 
 /* Main Page Cards */
@@ -212,6 +241,14 @@ body {
             "c c d d"
             "e e e e";
     }
+
+}
+
+@media only screen and (min-width: 1280px) {
+    .about-text p {
+        margin: 2rem 2rem 2rem 0;
+        text-align: justify;
+    }
 }
 
 .plot-encounter-duration {
@@ -283,10 +320,10 @@ select:focus {
 }
 
 .input-slider {
-    border:0; 
-    color:#000000; 
-    font-weight:bold;
-    background-color:lightgray;
+    border: 0;
+    color: #000000;
+    font-weight: bold;
+    background-color: lightgray;
 }
 
 /* Content */
@@ -294,9 +331,9 @@ select:focus {
     flex: 1 1 80%;
 }
 
-#mapid { 
-    height: 480px;
-    margin: 50px;
+#mapid {
+    height: 75vh;
+    margin: 1rem;
 }
 
 /* Footer */
@@ -322,11 +359,11 @@ select:focus {
 
 .svg-tooltip {
     position: absolute;
-    background: rgba(69,77,93,.9);
+    background: rgba(69, 77, 93, .9);
     border-radius: .1rem;
     color: #fff;
     padding: 0.5rem;
     white-space: pre;
     z-index: 300;
     visibility: hidden;
-  }
+}
