@@ -3,9 +3,10 @@ d3.json("/data/shapeGroups.json").then(data => {
 });
 
 // global data and global filters
-let processedData = [];
-let shapeFilter = null;
-let dateFilter = null;
+let encounters = [];
+let shapeFilter = "All";
+let dateFilter = [1906, 2014];
+let timeFilter = [0,24];
 
 
 d3.csv("/data/complete.csv").then(data => {
@@ -13,20 +14,11 @@ d3.csv("/data/complete.csv").then(data => {
         const duration = parseInt(row["duration (seconds)"]);
         const shape = row.shape;
         const [date, time] = row.datetime.split(" ");
-        const description = row.comments;
-        processedData.push({
-            duration,
-            shape,
-            date,
-            time,
-            description
-        });
+        const comments = row.comments;
+        let s = new Sighting(date, time, row.country, shape, duration, comments, row.latitude, row.longitude);
+        encounters.push(s);
     })
-    histogramEncounterDuration(processedData, 6, [0, 300]);
-    donutShapes(processedData);
-    wordCloudDescription(processedData);
-    plotSightYear(processedData);
-    histogramSightHour(processedData);
+    showInfo(encounters);
 });
 
 // For hover effects
@@ -194,7 +186,7 @@ function wordCloudDescription(data) {
         const stopWords = new Set(d0);
 
         data.forEach(d => {
-            const tokens = d.description.trim().split(" ")
+            const tokens = d.comments.trim().split(" ")
                 .map(w => w.toLowerCase())
                 .filter(w => w && !stopWords.has(w))
 
@@ -378,12 +370,16 @@ function histogramSightHour(data) {
 
 
 document.getElementById("shape_filter").addEventListener("change", (e) => {
-    shapeFilter = (e.target.value === "All") ? null : e.target.value;
+    shapeFilter = e.target.value;
+    const data = applyGobalFilters(encounters);
+    showInfo(data);
+});
+
+function showInfo(data) {
     d3.selectAll("svg").remove();
-    let data = applyGobalFilters(processedData);
     histogramEncounterDuration(data, 6, [0, 300]);
     donutShapes(data);
     wordCloudDescription(data);
     plotSightYear(data);
     histogramSightHour(data);
-});
+}
