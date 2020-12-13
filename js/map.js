@@ -40,11 +40,11 @@ window.onload = function() {
 
   // Map spin loading
   mymap.spin(true);
-  d3.csv("/data/data.csv").then(function (data) {   
+  d3.csv("/data/data_with_countries.csv").then(function (data) {   
     data.forEach(function (d) {
       // Create sighting object
       const [date, time] = d.datetime.split(" ")
-      let s = new Sighting(date, time, d.country, d.shape, d['duration (seconds)'], d.comments, d.latitude, d.longitude);
+      let s = new Sighting(date, time, d.city, d.country, d.shape, d['duration (seconds)'], d.comments, d.latitude, d.longitude);
       // Save object in encounters array
       encounters.push(s);     
       // Add markers 
@@ -78,6 +78,7 @@ function createMarker(d) {
   marker.data.popup =
   "<b>Date: </b>" + d.date + "<br>" +
   "<b>Hour: </b>" + d.time + "<br>" +
+  "<b>City: </b>" + d.city + "<br>" +
   "<b>Country: </b>" + countries.get(d.country) + "<br>" +
   "<b>Shape: </b>" + d.shape + "<br>" +
   "<b>Duration(s): </b>" + d.duration + "<br>" +

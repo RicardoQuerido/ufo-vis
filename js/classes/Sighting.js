@@ -1,15 +1,17 @@
 class Sighting {
     date;
     time;
+    city;
     country;
     shape;
     duration;
     comments;
     lat;
     long;
-    constructor(date, time, country, shape, duration, comments, lat, long) {
+    constructor(date, time, city, country, shape, duration, comments, lat, long) {
         this.date = date;
         this.time = time;
+        this.city = city;
         this.country = country;
         this.shape = shape;
         this.duration = duration;
@@ -23,6 +25,9 @@ class Sighting {
     }
     get time() {
         return this.time;
+    }
+    get city() {
+        return this.city;
     }
     get country() {
         return this.country;
