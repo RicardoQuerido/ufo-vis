@@ -1,7 +1,7 @@
 // plot creation functions
 function applyGobalFilters(data) {
     // TODO: Number limit filter
-    
+
     if (shapeFilter) {
         data = data.filter(d => d.shape === shapeFilter);
     }
@@ -11,7 +11,12 @@ function applyGobalFilters(data) {
     return data;
 }
 
-function createPlotBox(id, {top = 16, right = 16, bottom = 26, left = 64} = {}) {
+function createPlotBox(id, {
+    top = 16,
+    right = 16,
+    bottom = 26,
+    left = 64
+} = {}) {
     const plotArea = document.getElementById(id);
 
     const width = plotArea.offsetWidth;
@@ -37,8 +42,28 @@ function createSVG(id, width, height) {
         .attr("viewBox", `0 0 ${width} ${height}`);
 }
 
+function createNoDataText(svg, width, height) {
+    return svg
+        .append('text')
+        .text("No data.")
+        .attr("x", function () {
+            return (width / 2)
+        })
+        .attr("y", function () {
+            return (height / 2)
+        })
+        .style("text-anchor", "middle")
+        .style("font-family", "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;")
+        .style("font-size", "1.5rem");
+}
 
-function createXYAxis(width, height, margin, xDomain, yDomain, xLabel, yLabel, {xScale=d3.scaleLinear(), yScale=d3.scaleLinear(), xTicks=null, yTicks=null}={}) {
+
+function createXYAxis(width, height, margin, xDomain, yDomain, xLabel, yLabel, {
+    xScale = d3.scaleLinear(),
+    yScale = d3.scaleLinear(),
+    xTicks = null,
+    yTicks = null
+} = {}) {
     x = xScale
         .domain(xDomain)
         .range([margin.left, width - margin.right])
@@ -48,7 +73,7 @@ function createXYAxis(width, height, margin, xDomain, yDomain, xLabel, yLabel, {
         .domain(yDomain)
         .range([height - margin.bottom, margin.top])
         .nice();
-    
+
     xTicks = xTicks ? x.ticks(xTicks) : x.ticks().filter(tick => Number.isInteger(tick));
 
     yTicks = yTicks ? y.ticks(yTicks) : y.ticks().filter(tick => Number.isInteger(tick));

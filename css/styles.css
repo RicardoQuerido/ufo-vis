@@ -36,7 +36,7 @@ body {
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
-    height: 100vh;   
+    height: 100vh;
 }
 
 
@@ -311,3 +311,15 @@ select:focus {
     flex: 50%;
     text-align: right;
 }
+
+
+.svg-tooltip {
+    position: absolute;
+    background: rgba(69,77,93,.9);
+    border-radius: .1rem;
+    color: #fff;
+    padding: 0.5rem;
+    white-space: pre;
+    z-index: 300;
+    visibility: hidden;
+  }

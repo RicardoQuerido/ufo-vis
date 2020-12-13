@@ -2,12 +2,11 @@ d3.json("/data/shapeGroups.json").then(data => {
     createShapeFilters("shape_filter", data);
 });
 
-
-
 // global data and global filters
 let processedData = [];
 let shapeFilter = null;
 let dateFilter = null;
+
 
 d3.csv("/data/complete.csv").then(data => {
     data.forEach(row => {
@@ -23,18 +22,21 @@ d3.csv("/data/complete.csv").then(data => {
             description
         });
     })
-    histogramEncounterDuration(6, [0, 300]);
-    donutShapes();
-    wordCloudDescription();
-    plotSightYear();
-    histogramSightHour();
+    histogramEncounterDuration(processedData, 6, [0, 300]);
+    donutShapes(processedData);
+    wordCloudDescription(processedData);
+    plotSightYear(processedData);
+    histogramSightHour(processedData);
 });
 
+// For hover effects
+const tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "svg-tooltip");
 
-function histogramEncounterDuration(binsCount, rangeFilter = null) {
-    // apply global filters
-    let data = applyGobalFilters(processedData);
 
+function histogramEncounterDuration(data, binsCount, rangeFilter = null) {
     // apply local filters
     if (rangeFilter) {
         const [start, end] = rangeFilter;
@@ -44,12 +46,23 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
     // process data for plot
     const durations = data.map(d => d.duration);
 
-    // create plot
-    bins = d3.histogram().thresholds(binsCount)(durations);
 
     const [width, height, margin] = createPlotBox("plot_encounter_duration");
 
     let svg = createSVG("plot_encounter_duration", width, height);
+
+    if (durations.length === 0) {
+        createNoDataText(svg, width, height);
+        return ;
+    }
+
+    // create plot
+    let bins = d3.histogram().thresholds(binsCount)(durations);
+
+
+    if (durations.length === 1) {
+        bins[0].x0 = 0;
+    }
 
     const [xAxis, yAxis] = createXYAxis(
         width, height, margin,
@@ -58,18 +71,27 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
         "durations",
         "sightings", {
             xTicks: 12,
-            yTicks: 8
         }
     );
 
     // append to SVG
     svg.append("g")
-        .attr("fill", "#625656")
+        .attr("fill", "#cc9c59")
         .selectAll("rect")
         .data(bins)
         .join("rect")
-        .attr("x", d => x(d.x0) + 1)
-        .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
+        .attr("x", d => {
+            if (durations.length === 1) {
+                return margin.left;
+            }
+            return x(d.x0) + 1;
+        })
+        .attr("width", d => {
+            if (durations.length === 1) {
+                return x(d.x1) - margin.left;
+            }
+            return Math.max(0, x(d.x1) - x(d.x0) - 1);
+        })
         .attr("y", d => y(d.length))
         .attr("height", d => y(0) - y(d.length));
 
@@ -78,11 +100,28 @@ function histogramEncounterDuration(binsCount, rangeFilter = null) {
 
     svg.append("g")
         .call(yAxis);
+
+    svg.selectAll("rect")
+        .on("mouseover", function (d) {
+            d3.select(this)
+                .style("opacity", "0.7");
+            tooltip
+                .style("visibility", "visible")
+                .text(`Number of sightings: ${d.length}\nInterval: from ${d.x0} to ${d.x1} seconds`);
+        })
+        .on("mousemove", function () {
+            const leftMargin = (d3.event.pageX + 250 < window.innerWidth) ? d3.event.pageX + 10 : d3.event.pageX - 220;
+            tooltip
+                .style("top", d3.event.pageY + 20 + "px")
+                .style("left", leftMargin + "px");
+        })
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", "1");
+            tooltip.style("visibility", "hidden");
+        });
 }
 
-function donutShapes() {
-    // apply global filters
-    let data = applyGobalFilters(processedData);
+function donutShapes(data) {
 
     // process data for plot
     let shapes = new Map();
@@ -107,14 +146,13 @@ function donutShapes() {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 
-        let radius = Math.min(width, height) / 2 - margin.top
+    let radius = Math.min(width, height) / 2 - margin.top
 
-    // Compute the position of each group on the pie:
     let pie = d3.pie()
         .value(function (d) {
             return d[1];
         })
-        let data_ready = pie(shapes)
+    let data_ready = pie(shapes)
 
     let arc = d3.arc()
         .innerRadius(radius * 0.5)
@@ -137,7 +175,7 @@ function donutShapes() {
         .enter()
         .append('text')
         .text(function (d) {
-            return d.data[1]/data.length > 0.05 ? d.data[0] : "";
+            return d.data[1] / data.length > 0.05 ? d.data[0] : "";
         })
         .attr("transform", function (d) {
             return "translate(" + arc.centroid(d) + ")";
@@ -148,9 +186,7 @@ function donutShapes() {
 
 }
 
-function wordCloudDescription() {
-    // apply global filters
-    let data = applyGobalFilters(processedData);
+function wordCloudDescription(data) {
 
     let allWords = new Map();
 
@@ -213,9 +249,7 @@ function wordCloudDescription() {
 
 }
 
-function plotSightYear() {
-    // apply global filters
-    let data = applyGobalFilters(processedData);
+function plotSightYear(data) {
 
     // process data for plot
     let years = new Map();
@@ -266,29 +300,38 @@ function plotSightYear() {
         .call(yAxis);
 }
 
-function histogramSightHour() {
-    // apply global filters
-    let data = applyGobalFilters(processedData);
+function histogramSightHour(data) {
     const binsCount = 24;
 
     // process data for plot
     const hours = data.map(d => parseInt(d.time.split(":")[0]));
 
-    // create plot
-    bins = d3.histogram().thresholds(binsCount)(hours);
-
     const [width, height, margin] = createPlotBox("plot_sight_hour");
 
     let svg = createSVG("plot_sight_hour", width, height);
+
+    if (hours.length === 0) {
+        createNoDataText(svg, width, height);
+        return ;
+    }
+
+    // create plot
+    bins = d3.histogram().thresholds(binsCount)(hours);
+
+    if (hours.length === 1) {
+        bins[0].x0 -= 1;
+        if (bins[0].x0 === -1) {
+            bins[0].x0 = 23
+            bins[0].x1 = 24
+        }
+    }
 
     const [xAxis, yAxis] = createXYAxis(
         width, height, margin,
         [0, binsCount],
         [0, d3.max(bins, d => d.length)],
         "hours",
-        "sightings", {
-            xTicks: 24
-        }
+        "sightings"
     );
 
     // append to SVG
@@ -297,8 +340,12 @@ function histogramSightHour() {
         .selectAll("rect")
         .data(bins)
         .join("rect")
-        .attr("x", d => x(d.x0) + 1)
-        .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
+        .attr("x", d => {
+            return x(d.x0) + 1;
+        })
+        .attr("width", d => {
+            return Math.max(0, x(d.x1) - x(d.x0) - 1);
+        })
         .attr("y", d => y(d.length))
         .attr("height", d => y(0) - y(d.length));
 
@@ -307,15 +354,36 @@ function histogramSightHour() {
 
     svg.append("g")
         .call(yAxis);
+
+    svg.selectAll("rect")
+        .on("mouseover", function (d) {
+            d3.select(this)
+                .style("opacity", "0.7");
+            tooltip
+                .style("visibility", "visible")
+                .text(`Number of sightings: ${d.length}\nInterval: from ${d.x0}h00 to ${d.x1}h00`);
+        })
+        .on("mousemove", function () {
+            const leftMargin = (d3.event.pageX + 250 < window.innerWidth) ? d3.event.pageX + 10 : d3.event.pageX - 220;
+            tooltip
+                .style("top", d3.event.pageY + 20 + "px")
+                .style("left", leftMargin + "px");
+        })
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", "1");
+            tooltip.style("visibility", "hidden");
+        });
+
 }
 
 
 document.getElementById("shape_filter").addEventListener("change", (e) => {
-    shapeFilter = e.target.value;
+    shapeFilter = (e.target.value === "All") ? null : e.target.value;
     d3.selectAll("svg").remove();
-    histogramEncounterDuration(6, [0, 300]);
-    donutShapes();
-    wordCloudDescription();
-    plotSightYear();
-    histogramSightHour();
+    let data = applyGobalFilters(processedData);
+    histogramEncounterDuration(data, 6, [0, 300]);
+    donutShapes(data);
+    wordCloudDescription(data);
+    plotSightYear(data);
+    histogramSightHour(data);
 });
