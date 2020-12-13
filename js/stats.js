@@ -9,15 +9,16 @@ let dateFilter = [1906, 2014];
 let timeFilter = [0,24];
 
 
-d3.csv("/data/complete.csv").then(data => {
+d3.csv("/data/data_with_countries.csv").then(data => {
     data.forEach(row => {
         const duration = parseInt(row["duration (seconds)"]);
         const shape = row.shape;
         const [date, time] = row.datetime.split(" ");
         const comments = row.comments;
-        let s = new Sighting(date, time, row.country, shape, duration, comments, row.latitude, row.longitude);
+        let s = new Sighting(date, time, row.city, row.country, shape, duration, comments, row.latitude, row.longitude);
         encounters.push(s);
     })
+    console.log(encounters);
     showInfo(encounters);
 });
 
