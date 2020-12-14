@@ -131,7 +131,6 @@ $(function () {
         } catch(e) {
           mymap.setView([30, 0], 1.5);
         }
-        
       } 
   });
 });

@@ -86,3 +86,15 @@ $(function () {
         }
     });
 });
+
+$(function () {
+    $( "#clear_filters" ).click(function() {
+        $("#shape_filter").val("All").change();
+        $("#country_filter").val("All").change();
+        $("#slider-date").slider('values',0,1906);
+        $("#slider-date").slider('values',1,2014);
+        $("#slider-time").slider('values',0,00);
+        $("#slider-time").slider('values',1,24);
+        $("#amountTime").val(0 + "0h - " + 24 + "h");
+    });
+});
