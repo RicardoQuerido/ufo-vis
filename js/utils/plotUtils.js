@@ -50,7 +50,8 @@ function createXYAxis(width, height, margin, xDomain, yDomain, xLabel, yLabel, {
     xScale = d3.scaleLinear(),
     yScale = d3.scaleLinear(),
     xTicks = null,
-    yTicks = null
+    yTicks = null,
+    returnScale = false
 } = {}) {
     x = xScale
         .domain(xDomain)
@@ -89,6 +90,12 @@ function createXYAxis(width, height, margin, xDomain, yDomain, xLabel, yLabel, {
             .attr("font-weight", "bold")
             .attr("font-size", "1rem")
             .text(yLabel));
+    
+    let returnValue = [xAxis, yAxis];
+    if (returnScale) {
+        returnValue.push(x);
+        returnValue.push(y);
+    }
 
-    return [xAxis, yAxis];
+    return returnValue;
 }

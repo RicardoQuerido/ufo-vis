@@ -6,7 +6,7 @@ d3.json("/data/shapeGroups.json").then(data => {
 let encounters = [];
 let shapeFilter = "All";
 let dateFilter = [1906, 2014];
-let timeFilter = [0,24];
+let timeFilter = [0, 24];
 
 
 d3.csv("/data/data_with_countries.csv").then(data => {
@@ -18,7 +18,6 @@ d3.csv("/data/data_with_countries.csv").then(data => {
         let s = new Sighting(date, time, row.city, row.country, shape, duration, comments, row.latitude, row.longitude);
         encounters.push(s);
     })
-    console.log(encounters);
     showInfo(encounters);
 });
 
@@ -46,7 +45,7 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null) {
 
     if (durations.length === 0) {
         createNoDataText(svg, width, height);
-        return ;
+        return;
     }
 
     // create plot
@@ -254,6 +253,14 @@ function plotSightYear(data) {
             years.set(year, 1);
         }
     })
+
+    const [startYear, endYear] = dateFilter;
+    for(let y = startYear; y <= endYear; y++) {
+        if (!years.has(y)) {
+            years.set(y, 0);
+        }
+    }
+
     years = Array.from(years);
     years.sort();
 
@@ -261,6 +268,7 @@ function plotSightYear(data) {
     line = d3.line()
         .x(d => x(d[0]))
         .y(d => y(d[1]))
+        .curve(d3.curveMonotoneX)
 
     const [width, height, margin] = createPlotBox("plot_sight_year", {
         right: 32
@@ -268,12 +276,13 @@ function plotSightYear(data) {
 
     let svg = createSVG("plot_sight_year", width, height);
 
-    const [xAxis, yAxis] = createXYAxis(
+    const [xAxis, yAxis, xScale, yScale] = createXYAxis(
         width, height, margin,
         d3.extent(years.map(d => d[0])),
         [0, d3.max(years.map(d => d[1]))],
         "years",
         "sightings",
+        {returnScale: true}
     );
 
     // append to SVG
@@ -291,6 +300,36 @@ function plotSightYear(data) {
 
     svg.append("g")
         .call(yAxis);
+
+    svg.selectAll(".dot")
+        .data(years)
+        .enter().append("circle")
+        .attr("fill", "#F07C83")
+        .attr("cx", function (d, i) {
+            return xScale(d[0])
+        })
+        .attr("cy", function (d) {
+            return yScale(d[1])
+        })
+        .attr("r", 5)
+        .on("mouseover", function (d) {
+            d3.select(this)
+                .style("opacity", "0.7")
+                .attr("r", 10);
+            tooltip
+                .style("visibility", "visible")
+                .text(`Number of sightings: ${d[1]}\nYear: ${d[0]}`);
+        })
+        .on("mousemove", function () {
+            const leftMargin = (d3.event.pageX + 250 < window.innerWidth) ? d3.event.pageX + 10 : d3.event.pageX - 220;
+            tooltip
+                .style("top", d3.event.pageY + 20 + "px")
+                .style("left", leftMargin + "px");
+        })
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", "1").attr("r", 5);
+            tooltip.style("visibility", "hidden");
+        });;
 }
 
 function histogramSightHour(data) {
@@ -305,7 +344,7 @@ function histogramSightHour(data) {
 
     if (hours.length === 0) {
         createNoDataText(svg, width, height);
-        return ;
+        return;
     }
 
     // create plot
