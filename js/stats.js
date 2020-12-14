@@ -176,6 +176,25 @@ function donutShapes(data) {
         .style("font-size", 17)
 
 
+    svg.selectAll("path")
+        .on("mouseover", function (d) {
+            d3.select(this)
+                .style("opacity", "0.7");
+            tooltip
+                .style("visibility", "visible")
+                .text(`Number of sightings: ${d.data[1]}\nShape: ${d.data[0].charAt(0).toUpperCase() + d.data[0].slice(1)}`);
+        })
+        .on("mousemove", function () {
+            const leftMargin = (d3.event.pageX + 210 < window.innerWidth) ? d3.event.pageX + 10 : d3.event.pageX - 190;
+            tooltip
+                .style("top", d3.event.pageY + 20 + "px")
+                .style("left", leftMargin + "px");
+        })
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", "1");
+            tooltip.style("visibility", "hidden");
+        });
+
 }
 
 function wordCloudDescription(data) {
