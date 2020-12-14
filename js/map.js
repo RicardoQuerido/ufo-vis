@@ -60,7 +60,7 @@ window.onload = function() {
     data.forEach(function (d) {
       // Create sighting object
       const [date, time] = d.datetime.split(" ")
-      let s = new Sighting(date, time, d.city, d.country, d.shape, d['duration (seconds)'], d.comments, d.latitude, d.longitude);
+      let s = new Sighting(date, time, d.city, d.country, d.shape, d['duration (hours/min)'], d.comments, d.latitude, d.longitude);
       // Save object in encounters array
       encounters.push(s);     
       // Add markers 
