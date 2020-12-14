@@ -17,13 +17,29 @@ var mymap;
 
 
 d3.csv("/data/countries.csv").then(function (data) {
+    let filter = document.getElementById('country_filter');
     data.forEach(function (d) {
-    countries.set(d.Code.toLowerCase(), d.Name);
+      countries.set(d.Code.toLowerCase(), d.Name);
+      // Add options to select on html
+      let countryOption = document.createElement("option");
+      countryOption.textContent = d.Name;
+      countryOption.value = d.Code.toLowerCase();
+      filter.appendChild(countryOption);
   });
 });
 
+var geojsonLayer = new L.GeoJSON.AJAX("data/custom.geo.json", {
+  onEachFeature: forEachFeature
+}); 
 
+function forEachFeature(feature, layer) {
+  // Tagging each state poly with their name for the search cont
+  layer._leaflet_id = feature.properties.iso_a2.toLowerCase();
+ // console.log(feature.properties.ISO_A2.toLowerCase());
+}
 window.onload = function() {
+
+  
 
   // Create map instance
   mymap = L.map('mapid').setView([30, 0], 1.5);
@@ -101,3 +117,21 @@ function showInfo(filtered) {
     mymap.addLayer(pruneCluster);
     pruneCluster.ProcessView();
 }
+
+
+$(function () {
+  $('#country_filter').on('change', function() {
+      if (this.value === 'All') {
+        
+        mymap.setView([30, 0], 1.5);
+      } else {
+        try{
+          var layer = geojsonLayer._layers[this.value];
+          mymap.fitBounds(layer.getBounds());
+        } catch(e) {
+          mymap.setView([30, 0], 1.5);
+        }
+        
+      } 
+  });
+});
