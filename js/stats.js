@@ -164,8 +164,13 @@ function donutShapes(data) {
     let data_ready = pie(shapes)
 
     let arc = d3.arc()
-        .innerRadius(radius * 0.5)
-        .outerRadius(radius * 0.8)
+        .innerRadius(radius * 0.3)
+        .outerRadius(radius * 0.6)
+
+    // Another arc that won't be drawn. Just for labels positioning
+    var outerArc = d3.arc()
+        .innerRadius(radius * 0.7)
+        .outerRadius(radius * 0.7)
 
     svg
         .selectAll('allSlices')
@@ -178,19 +183,55 @@ function donutShapes(data) {
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
 
+
+    // Add the polylines between chart and labels:
     svg
-        .selectAll('mySlices')
+        .selectAll('allPolylines')
+        .data(data_ready)
+        .enter()
+        .append('polyline')
+        .attr("stroke", "black")
+        .style("fill", "none")
+        .attr("stroke-width", 1)
+        .attr('points', function(d) {
+            var posA = arc.centroid(d) // line insertion in the slice
+            var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
+            var posC = outerArc.centroid(d); // Label position = almost the same as posB
+            var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
+            posC[0] = radius * 0.65 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+            return d.data[1] / data.length > 0.02 ? [posA, posB, posC] : "";
+        })
+
+    // Add the polylines between chart and labels:
+    svg
+        .selectAll('allLabels')
         .data(data_ready)
         .enter()
         .append('text')
-        .text(function (d) {
-            return d.data[1] / data.length > 0.05 ? d.data[0] : "";
+        .text( function(d) { return d.data[1] / data.length > 0.02 ? d.data[0] : ""; } )
+        .attr('transform', function(d) {
+            var pos = outerArc.centroid(d);
+            var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+            pos[0] = radius * 0.69 * (midangle < Math.PI ? 1 : -1);
+            return 'translate(' + pos + ')';
         })
-        .attr("transform", function (d) {
-            return "translate(" + arc.centroid(d) + ")";
+        .style('text-anchor', function(d) {
+            var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+            return (midangle < Math.PI ? 'start' : 'end')
         })
-        .style("text-anchor", "middle")
-        .style("font-size", 17)
+    // svg
+    //     .selectAll('mySlices')
+    //     .data(data_ready)
+    //     .enter()
+    //     .append('text')
+    //     .text(function (d) {
+    //         return d.data[1] / data.length > 0.05 ? d.data[0] : "";
+    //     })
+    //     .attr("transform", function (d) {
+    //         return "translate(" + arc.centroid(d) + ")";
+    //     })
+    //     .style("text-anchor", "middle")
+    //     .style("font-size", 17)
 
 
     svg.selectAll("path")

@@ -235,11 +235,11 @@ body {
 @media only screen and (min-width: 1300px) {
     .cards-plots {
         grid-template-rows: repeat(3, minmax(400px, 40vh));
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         grid-template-areas:
-            "a a a b"
-            "c c d d"
-            "e e e e";
+            "a a a a b b"
+            "c c c d d d"
+            "e e e e e e";
     }
 
 }
