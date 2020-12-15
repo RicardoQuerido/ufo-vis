@@ -118,9 +118,10 @@ $(function () {
         $("#slider-time").slider('values', 0, 00);
         $("#slider-time").slider('values', 1, 24);
         $("#amount").val(1906 + " - " + 2014);
-        $("#amountTime").val(0 + "0h - " + 24 + "h");
+        $("#amountTime").val(0 + "0h - " + 24 + "h");        
         reset = false;
 
+        countryFilter = "All";
         shapeFilter = "All";
         dateFilter = [1906, 2014];
         timeFilter = [0, 24];

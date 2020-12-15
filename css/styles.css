@@ -329,7 +329,8 @@ select:focus {
 
 button {
     cursor: pointer;
-    background-color: var(--dark2); /* Green */
+    background-color: var(--dark2);
+    /* Green */
     border: none;
     color: white;
     padding: 5px 5px 5px;
@@ -345,7 +346,7 @@ button {
 button:active {
     background-color: var(--dark);
     transform: translateY(4px);
-  }
+}
 
 
 /* Content */
@@ -392,49 +393,50 @@ button:active {
 
 /*Tool tip*/
 
- /* Tooltip container */
- .tooltip {
+/* Tooltip container */
+.tooltip {
     position: relative;
     display: inline-block;
-  }
-  
-  /* Tooltip text */
-  .tooltip .tooltiptext {
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
     visibility: hidden;
     font-size: 15px;
     width: 220px;
     background-color: #555;
     color: #fff;
     text-align: center;
-    padding: 5px 0;
     border-radius: 6px;
-  
+    padding: 0.5rem;
+    
+
     /* Position the tooltip text */
     position: absolute;
     z-index: 2;
     top: -55px;
-    right: 120%; 
+    right: 120%;
     margin-left: -60px;
-  
+
     /* Fade in tooltip */
     opacity: 0;
     transition: opacity 0.3s;
-  }
-  
-  /* Tooltip arrow */
-  .tooltip .tooltiptext::after {
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
     content: "";
     position: absolute;
-    top:70%;
+    top: 70%;
     left: 100%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
-  } 
+}
