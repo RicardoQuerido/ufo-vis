@@ -72,14 +72,14 @@ window.onload = function() {
   });
   
   // Listener for shape filter
-  document.getElementById("shape_filter").addEventListener("change", (e) => {
+  $('#shape_filter').on('change', function() {
     mymap.spin(true);
+    shapeFilter = this.value;
     setTimeout(function () {
-      shapeFilter = e.target.value;
       filtered = applyGobalFilters(encounters);
       showInfo(filtered);  
       mymap.spin(false);
-      }, 0);
+    }, 0);
   });
 
 };
