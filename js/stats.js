@@ -2,11 +2,23 @@ d3.json("/data/shapeGroups.json").then(data => {
     createShapeFilters("shape_filter", data);
 });
 
+d3.csv("/data/countries.csv").then(function (data) {
+    let filter = document.getElementById('country_filter');
+    data.forEach(function (d) {
+        // Add options to select on html
+        let countryOption = document.createElement("option");
+        countryOption.textContent = d.Name;
+        countryOption.value = d.Code.toLowerCase();
+        filter.appendChild(countryOption);
+    });
+});
+
 // global data and global filters
 let encounters = [];
 let shapeFilter = "All";
-let dateFilter = [1906, 2014];
+let dateFilter = [1994, 2014];
 let timeFilter = [0, 24];
+let countryFilter = "All";
 
 
 d3.csv("/data/data_with_countries.csv").then(data => {
@@ -18,7 +30,8 @@ d3.csv("/data/data_with_countries.csv").then(data => {
         let s = new Sighting(date, time, row.city, row.country, shape, duration, comments, row.latitude, row.longitude);
         encounters.push(s);
     })
-    showInfo(encounters);
+    filtered = applyGobalFilters(encounters);
+    showInfo(filtered);
 });
 
 // For hover effects
@@ -138,7 +151,7 @@ function donutShapes(data) {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     if (shapes.length === 0) {
-        createNoDataText(svg, width/6, height/6);
+        createNoDataText(svg, width / 6, height / 6);
         return;
     }
 
@@ -283,7 +296,7 @@ function plotSightYear(data) {
     })
 
     const [startYear, endYear] = dateFilter;
-    for(let y = startYear; y <= endYear; y++) {
+    for (let y = startYear; y <= endYear; y++) {
         if (!years.has(y)) {
             years.set(y, 0);
         }
@@ -309,8 +322,9 @@ function plotSightYear(data) {
         d3.extent(years.map(d => d[0])),
         [0, d3.max(years.map(d => d[1]))],
         "years",
-        "sightings",
-        {returnScale: true}
+        "sightings", {
+            returnScale: true
+        }
     );
 
     // append to SVG
@@ -450,4 +464,10 @@ function showInfo(data) {
     wordCloudDescription(data);
     plotSightYear(data);
     histogramSightHour(data);
+}
+
+function processCountryFilter(country) {
+    countryFilter = country;
+    const data = applyGobalFilters(encounters);
+    showInfo(data);
 }

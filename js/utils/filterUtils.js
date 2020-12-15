@@ -23,6 +23,10 @@ function applyGobalFilters(data) {
         data = data.filter(d => d.shape === shapeFilter);
     }
 
+    if (countryFilter !== "All") {
+        data = data.filter(d => d.country === countryFilter);
+    }
+
     const [startDate, endDate] = dateFilter;
     const [startTime, endTime] = timeFilter;
 
@@ -39,7 +43,7 @@ $(function () {
         range: true,
         min: 1906,
         max: 2014,
-        values: [1906, 2014],
+        values: [1994, 2014],
         slide: function (event, ui) {
             $("#amount").val(ui.values[0] + " - " + ui.values[1]);
         },
@@ -96,6 +100,15 @@ $(function () {
 });
 
 $(function () {
+    $('#country_filter').on('change', function () {
+        if(reset) {
+            return;
+        }
+        processCountryFilter(this.value);
+    });
+});
+
+$(function () {
     $("#clear_filters").click(function () {
         reset = true;
         $("#shape_filter").val("All").change();
@@ -116,3 +129,4 @@ $(function () {
 
     });
 });
+
