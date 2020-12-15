@@ -137,6 +137,10 @@ function donutShapes(data) {
         .append("g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+    if (shapes.length === 0) {
+        createNoDataText(svg, width/6, height/6);
+        return;
+    }
 
     let radius = Math.min(width, height) / 2 - margin.top
 
@@ -230,6 +234,11 @@ function wordCloudDescription(data) {
         const [width, height, margin] = createPlotBox("plot_description");
 
         let svg = createSVG("plot_description", width, height);
+
+        if (allWords.length === 0) {
+            createNoDataText(svg, width, height);
+            return;
+        }
 
         const layout = d3.layout.cloud()
             .size([width, height])
