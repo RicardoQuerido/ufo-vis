@@ -1,3 +1,5 @@
+let reset = false;
+
 function createShapeFilters(id, shapeGroups) {
     let shapeFilter = document.getElementById(id);
 
@@ -42,6 +44,9 @@ $(function () {
             $("#amount").val(ui.values[0] + " - " + ui.values[1]);
         },
         change: function (event, ui) {
+            if (reset) {
+                return;
+            }
             dateFilter = [ui.values[0], ui.values[1]]
             filtered = applyGobalFilters(encounters);
             showInfo(filtered)
@@ -80,6 +85,9 @@ $(function () {
             $("#amountTime").val(start + "h - " + end + "h");
         },
         change: function (event, ui) {
+            if (reset) {
+                return;
+            }
             timeFilter = [ui.values[0], ui.values[1]];
             filtered = applyGobalFilters(encounters);
             showInfo(filtered);
@@ -88,14 +96,23 @@ $(function () {
 });
 
 $(function () {
-    $( "#clear_filters" ).click(function() {
+    $("#clear_filters").click(function () {
+        reset = true;
         $("#shape_filter").val("All").change();
         $("#country_filter").val("All").change();
-        $("#slider-date").slider('values',0,1906);
-        $("#slider-date").slider('values',1,2014);
-        $("#slider-time").slider('values',0,00);
-        $("#slider-time").slider('values',1,24);
+        $("#slider-date").slider('values', 0, 1906);
+        $("#slider-date").slider('values', 1, 2014);
+        $("#slider-time").slider('values', 0, 00);
+        $("#slider-time").slider('values', 1, 24);
         $("#amount").val(1906 + " - " + 2014);
         $("#amountTime").val(0 + "0h - " + 24 + "h");
+        reset = false;
+
+        shapeFilter = "All";
+        dateFilter = [1906, 2014];
+        timeFilter = [0, 24];
+        filtered = applyGobalFilters(encounters);
+        showInfo(filtered);
+
     });
 });
