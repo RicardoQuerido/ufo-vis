@@ -73,7 +73,7 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null) {
         width, height, margin,
         d3.extent(durations),
         [0, d3.max(bins, d => d.length)],
-        "durations",
+        "duration(s)",
         "sightings", {
             xTicks: 12,
         }
