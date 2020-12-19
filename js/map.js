@@ -55,6 +55,27 @@ window.onload = function () {
     accessToken: 'pk.eyJ1IjoiZnJhbmNpc2NvbGJzaWx2ZWlyYSIsImEiOiJjam9oazk0OXIwMWVlM2twcTRqa3R1azBpIn0.Mr8lC9YaoSi0Vx7YuPFJUg'
   }).addTo(mymap);
 
+  // Add legend
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd = function (mymap) {
+
+      var div = L.DomUtil.create('div', 'info legend'),
+          grades = [0, 100, 4000],
+          labels = [];
+      div.innerHTML += 'Number of sightings:<br>';
+      // loop through our density intervals and generate a label with a colored square for each interval
+      for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+              '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+              grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
+      }
+
+      return div;
+  };
+
+  legend.addTo(mymap);
+
   // Map spin loading
   mymap.spin(true);
   d3.csv("/data/data_with_countries.csv").then(function (data) {
@@ -148,4 +169,10 @@ function processCountryFilter(country) {
       mymap.setView([30, 0], 1.5);
     }
   }
+}
+
+function getColor(d) {
+  return d > 4000 ? 'rgba(241, 128, 23, 0.6)' :
+         d > 100  ? 'rgba(240, 194, 12, 0.6)' :
+                    'rgba(110, 204, 57, 0.6)';
 }
