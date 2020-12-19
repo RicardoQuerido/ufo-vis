@@ -97,8 +97,20 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null) {
             }
             return Math.max(0, x(d.x1) - x(d.x0) - 1);
         })
+        .attr("height", function (d) {
+            return 0;
+        })
+        .attr("y", function (d) {
+            return y(0);
+        })
+
+    svg.selectAll("rect")
+        .transition()
+        .duration(2000)
         .attr("y", d => y(d.length))
-        .attr("height", d => y(0) - y(d.length));
+        .attr("height", d => y(0) - y(d.length))
+        .delay(function(d,i){return(i*200)});
+        
 
     svg.append("g")
         .call(xAxis);
@@ -193,7 +205,7 @@ function donutShapes(data) {
         .attr("stroke", "black")
         .style("fill", "none")
         .attr("stroke-width", 1)
-        .attr('points', function(d) {
+        .attr('points', function (d) {
             var posA = arc.centroid(d) // line insertion in the slice
             var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
             var posC = outerArc.centroid(d); // Label position = almost the same as posB
@@ -208,14 +220,16 @@ function donutShapes(data) {
         .data(data_ready)
         .enter()
         .append('text')
-        .text( function(d) { return d.data[1] / data.length > 0.02 ? d.data[0] : ""; } )
-        .attr('transform', function(d) {
+        .text(function (d) {
+            return d.data[1] / data.length > 0.02 ? d.data[0] : "";
+        })
+        .attr('transform', function (d) {
             var pos = outerArc.centroid(d);
             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
             pos[0] = radius * 0.69 * (midangle < Math.PI ? 1 : -1);
             return 'translate(' + pos + ')';
         })
-        .style('text-anchor', function(d) {
+        .style('text-anchor', function (d) {
             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
             return (midangle < Math.PI ? 'start' : 'end')
         })
@@ -323,6 +337,8 @@ function wordCloudDescription(data) {
 
 }
 
+let hmm;
+
 function plotSightYear(data) {
 
     // process data for plot
@@ -412,11 +428,11 @@ function plotSightYear(data) {
         .on("mouseout", function () {
             d3.select(this).style("opacity", "1").attr("r", 5);
             tooltip.style("visibility", "hidden");
-        });;
+        });
 }
 
 function histogramSightHour(data) {
-    const binsCount = 24;
+    const binsCount = timeFilter[1]-timeFilter[0];
 
     // process data for plot
     const hours = data.map(d => parseInt(d.time.split(":")[0]));
@@ -443,7 +459,7 @@ function histogramSightHour(data) {
 
     const [xAxis, yAxis] = createXYAxis(
         width, height, margin,
-        [0, binsCount],
+        d3.extent(hours),
         [0, d3.max(bins, d => d.length)],
         "hours",
         "sightings"
@@ -461,8 +477,21 @@ function histogramSightHour(data) {
         .attr("width", d => {
             return Math.max(0, x(d.x1) - x(d.x0) - 1);
         })
+        .attr("height", function (d) {
+            return 0;
+        })
+        .attr("y", function (d) {
+            return y(0);
+        })
+
+    svg.selectAll("rect")
+        .transition()
+        .duration(2000)
         .attr("y", d => y(d.length))
-        .attr("height", d => y(0) - y(d.length));
+        .attr("height", d => y(0) - y(d.length))
+        .delay(function(d,i){return(i*100)});
+
+        
 
     svg.append("g")
         .call(xAxis);
