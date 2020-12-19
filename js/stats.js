@@ -109,8 +109,10 @@ function histogramEncounterDuration(data, binsCount, rangeFilter = null) {
         .duration(2000)
         .attr("y", d => y(d.length))
         .attr("height", d => y(0) - y(d.length))
-        .delay(function(d,i){return(i*200)});
-        
+        .delay(function (d, i) {
+            return (i * 200)
+        });
+
 
     svg.append("g")
         .call(xAxis);
@@ -337,8 +339,6 @@ function wordCloudDescription(data) {
 
 }
 
-let hmm;
-
 function plotSightYear(data) {
 
     // process data for plot
@@ -385,7 +385,7 @@ function plotSightYear(data) {
     );
 
     // append to SVG
-    svg.append("path")
+    const path = svg.append("path")
         .datum(years)
         .attr("fill", "none")
         .attr("stroke", "#F07C83")
@@ -393,6 +393,16 @@ function plotSightYear(data) {
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("d", line);
+
+    const totalLength = path.node().getTotalLength();
+
+    path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(4000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
 
     svg.append("g")
         .call(xAxis);
@@ -403,14 +413,9 @@ function plotSightYear(data) {
     svg.selectAll(".dot")
         .data(years)
         .enter().append("circle")
-        .attr("fill", "#F07C83")
-        .attr("cx", function (d, i) {
-            return xScale(d[0])
-        })
-        .attr("cy", function (d) {
-            return yScale(d[1])
-        })
-        .attr("r", 5)
+        
+        
+        .attr("r", 0)
         .on("mouseover", function (d) {
             d3.select(this)
                 .style("opacity", "0.7")
@@ -429,10 +434,23 @@ function plotSightYear(data) {
             d3.select(this).style("opacity", "1").attr("r", 5);
             tooltip.style("visibility", "hidden");
         });
+
+    d3.selectAll("circle")
+        .transition()
+        .delay(function(d,i){return(i*2000/years.length)})
+        .attr("r", 5)
+        .attr("fill", "#F07C83")
+        .attr("cx", function (d, i) {
+            return xScale(d[0])
+        })
+        .attr("cy", function (d) {
+            return yScale(d[1])
+        })
+        
 }
 
 function histogramSightHour(data) {
-    const binsCount = timeFilter[1]-timeFilter[0];
+    const binsCount = timeFilter[1] - timeFilter[0];
 
     // process data for plot
     const hours = data.map(d => parseInt(d.time.split(":")[0]));
@@ -489,9 +507,11 @@ function histogramSightHour(data) {
         .duration(2000)
         .attr("y", d => y(d.length))
         .attr("height", d => y(0) - y(d.length))
-        .delay(function(d,i){return(i*100)});
+        .delay(function (d, i) {
+            return (i * 100)
+        });
 
-        
+
 
     svg.append("g")
         .call(xAxis);
