@@ -43,7 +43,7 @@ $(function () {
         range: true,
         min: 1906,
         max: 2014,
-        values: [1994, 2014],
+        values: [1906, 2014],
         slide: function (event, ui) {
             $("#amount").val(ui.values[0] + " - " + ui.values[1]);
         },

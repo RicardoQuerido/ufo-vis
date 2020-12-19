@@ -16,7 +16,7 @@ d3.csv("/data/countries.csv").then(function (data) {
 // global data and global filters
 let encounters = [];
 let shapeFilter = "All";
-let dateFilter = [1994, 2014];
+let dateFilter = [1906, 2014];
 let timeFilter = [0, 24];
 let countryFilter = "All";
 
