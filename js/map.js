@@ -63,12 +63,12 @@ window.onload = function () {
       var div = L.DomUtil.create('div', 'info legend'),
           grades = [0, 100, 4000],
           labels = [];
-      div.innerHTML += 'Number of sightings:<br>';
+      div.innerHTML += 'Number of sightings:';
       // loop through our density intervals and generate a label with a colored square for each interval
       for (var i = 0; i < grades.length; i++) {
           div.innerHTML +=
-              '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-              grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
+              '<div><i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+              grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '</div>' : '+');
       }
 
       return div;
