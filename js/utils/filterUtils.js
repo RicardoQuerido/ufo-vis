@@ -19,6 +19,22 @@ function createShapeFilters(id, shapeGroups) {
 
 
 function applyGobalFilters(data) {
+    const [startDate, endDate] = dateFilter;
+    const [startTime, endTime] = timeFilter;
+    const clear_filters_button = document.getElementById("clear_filters");
+    clear_filters_button.style.display = "none";
+
+    if (shapeFilter === "All" &&
+        countryFilter === "All" &&
+        startDate === 1906 &&
+        endDate === 2014 &&
+        startTime === 0 &&
+        endTime === 24) {
+            return data;
+    }
+
+    clear_filters_button.style.display = "inline-block";
+
     if (shapeFilter !== "All") {
         data = data.filter(d => d.shape === shapeFilter);
     }
@@ -26,9 +42,6 @@ function applyGobalFilters(data) {
     if (countryFilter !== "All") {
         data = data.filter(d => d.country === countryFilter);
     }
-
-    const [startDate, endDate] = dateFilter;
-    const [startTime, endTime] = timeFilter;
 
     return data.filter(d => {
         const year = d.date.split('/')[2];
@@ -101,7 +114,7 @@ $(function () {
 
 $(function () {
     $('#country_filter').on('change', function () {
-        if(reset) {
+        if (reset) {
             return;
         }
         processCountryFilter(this.value);
@@ -118,7 +131,7 @@ $(function () {
         $("#slider-time").slider('values', 0, 00);
         $("#slider-time").slider('values', 1, 24);
         $("#amount").val(1906 + " - " + 2014);
-        $("#amountTime").val(0 + "0h - " + 24 + "h");        
+        $("#amountTime").val(0 + "0h - " + 24 + "h");
         reset = false;
 
         countryFilter = "All";
@@ -130,4 +143,3 @@ $(function () {
 
     });
 });
-

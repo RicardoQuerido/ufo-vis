@@ -330,24 +330,23 @@ select:focus {
 button {
     cursor: pointer;
     background-color: var(--dark2);
-    /* Green */
     border: none;
     color: white;
-    padding: 5px 5px 5px;
-    width: 55%;
-    left: 50%;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 8px;
+    padding: 0.8rem;
+    display: none;
+    font-size: 1rem;
+    border-radius: 2px;
+    transition: var(--transition-speed);
+}
+
+button:hover {
+    background-color: white;
+    color: var(--dark2);
 }
 
 button:active {
     background-color: var(--dark);
-    transform: translateY(4px);
 }
-
 
 /* Content */
 .content {

@@ -61,7 +61,7 @@ window.onload = function () {
   legend.onAdd = function (mymap) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 100, 4000],
+          grades = [0, 1000, 4000],
           labels = [];
       div.innerHTML += 'Number of sightings:';
       // loop through our density intervals and generate a label with a colored square for each interval
@@ -173,6 +173,6 @@ function processCountryFilter(country) {
 
 function getColor(d) {
   return d > 4000 ? 'rgba(241, 128, 23, 0.6)' :
-         d > 100  ? 'rgba(240, 194, 12, 0.6)' :
+         d > 1000  ? 'rgba(240, 194, 12, 0.6)' :
                     'rgba(110, 204, 57, 0.6)';
 }
