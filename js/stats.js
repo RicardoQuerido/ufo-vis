@@ -191,12 +191,15 @@ function donutShapes(data) {
         .data(data_ready)
         .enter()
         .append('path')
+        .transition()
+        .delay(function (d, i) {
+            return i * 200;
+        })
         .attr('d', arc)
         .attr('fill', () => '#' + (Math.random() * 0xFFFFFF << 0).toString(16))
         .attr("stroke", "white")
         .style("stroke-width", "2px")
-        .style("opacity", 0.7)
-
+        .style("opacity", 0.7);
 
     // Add the polylines between chart and labels:
     svg
@@ -205,6 +208,10 @@ function donutShapes(data) {
         .enter()
         .append('polyline')
         .attr("stroke", "black")
+        .transition()
+        .delay(function (d, i) {
+            return i * 200;
+        })
         .style("fill", "none")
         .attr("stroke-width", 1)
         .attr('points', function (d) {
@@ -222,6 +229,10 @@ function donutShapes(data) {
         .data(data_ready)
         .enter()
         .append('text')
+        .transition()
+        .delay(function (d, i) {
+            return i * 200;
+        })
         .text(function (d) {
             return d.data[1] / data.length > 0.02 ? d.data[0] : "";
         })
@@ -235,6 +246,7 @@ function donutShapes(data) {
             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
             return (midangle < Math.PI ? 'start' : 'end')
         })
+        
     // svg
     //     .selectAll('mySlices')
     //     .data(data_ready)
@@ -323,6 +335,10 @@ function wordCloudDescription(data) {
                     .data(words)
                     .enter()
                     .append("text")
+                    .transition()
+                    .delay(function (d, i) {
+                        return i * 200;
+                    })
                     .text((d) => d.text)
                     .style("font-size", (d) => d.size + "px")
                     .style("font-family", (d) => d.font)
@@ -413,8 +429,8 @@ function plotSightYear(data) {
     svg.selectAll(".dot")
         .data(years)
         .enter().append("circle")
-        
-        
+
+
         .attr("r", 0)
         .on("mouseover", function (d) {
             d3.select(this)
@@ -437,7 +453,9 @@ function plotSightYear(data) {
 
     d3.selectAll("circle")
         .transition()
-        .delay(function(d,i){return(i*2000/years.length)})
+        .delay(function (d, i) {
+            return (i * 2000 / years.length)
+        })
         .attr("r", 5)
         .attr("fill", "#F07C83")
         .attr("cx", function (d, i) {
@@ -446,7 +464,7 @@ function plotSightYear(data) {
         .attr("cy", function (d) {
             return yScale(d[1])
         })
-        
+
 }
 
 function histogramSightHour(data) {
