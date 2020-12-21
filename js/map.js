@@ -118,7 +118,7 @@ function createMarker(d) {
     "<b>City: </b>" + d.city + "<br>" +
     "<b>Country: </b>" + countries.get(d.country) + "<br>" +
     "<b>Shape: </b>" + d.shape + "<br>" +
-    "<b>Duration(s): </b>" + d.duration + "<br>" +
+    "<b>Duration: </b>" + d.duration + "<br>" +
     "<b>Description: </b>" + d.comments + "<br>";
   marker.data.icon = myIcon;
   return marker;
