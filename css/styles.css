@@ -296,12 +296,12 @@ body {
 
 /* Sidebar Menu */
 .sidenav {
-    flex: 1 1 15%;
     display: flex;
     flex-direction: column;
     background-color: lightgray;
     padding: 2rem;
     height: 100%;
+    max-width: 300px;
 }
 
 .sidenav>* {
@@ -313,7 +313,6 @@ select {
     border: 2px solid var(--dark);
     border-radius: 5px;
     padding: 0.5rem;
-    width: 200px;
 }
 
 select:focus {
@@ -322,9 +321,12 @@ select:focus {
 
 .input-slider {
     border: 0;
-    color: #000000;
     font-weight: bold;
     background-color: lightgray;
+}
+
+.ui-slider-handle:active {
+    background-color: var(--accent) !important;
 }
 
 button {
@@ -378,7 +380,7 @@ button:active {
     text-align: right;
 }
 
-
+/* Tooltips */
 .svg-tooltip {
     position: absolute;
     background: rgba(69, 77, 93, .9);
@@ -390,12 +392,15 @@ button:active {
     visibility: hidden;
 }
 
-/*Tool tip*/
-
 /* Tooltip container */
 .tooltip {
     position: relative;
     display: inline-block;
+    transition: var(--transition-speed);
+}
+
+.tooltip:hover {
+    color: var(--accent);
 }
 
 /* Tooltip text */
@@ -408,7 +413,7 @@ button:active {
     text-align: center;
     border-radius: 6px;
     padding: 0.5rem;
-    
+
 
     /* Position the tooltip text */
     position: absolute;
@@ -446,6 +451,7 @@ button:active {
     display: flex;
     flex-direction: column;
 }
+
 .legend i {
     width: 18px;
     height: 18px;
@@ -458,10 +464,11 @@ button:active {
     padding: 6px 8px;
     font: 14px/17px Arial, Helvetica, sans-serif;
     background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
+
 .info h4 {
     margin: 0 0 5px;
     color: #777;
