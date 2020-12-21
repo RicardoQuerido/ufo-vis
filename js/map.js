@@ -39,9 +39,6 @@ function forEachFeature(feature, layer) {
   // console.log(feature.properties.ISO_A2.toLowerCase());
 }
 window.onload = function () {
-
-
-
   // Create map instance
   mymap = L.map('mapid').setView([30, 0], 1.5);
   // Add tile layer to the map

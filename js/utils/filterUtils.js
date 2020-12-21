@@ -50,8 +50,9 @@ function applyGobalFilters(data) {
     });
 }
 
-// Create range slider for date
+
 $(function () {
+    // Create range slider for date
     $("#slider-date").slider({
         range: true,
         min: 1906,
@@ -71,9 +72,8 @@ $(function () {
     });
     $("#amount").val($("#slider-date").slider("values", 0) +
         " - " + $("#slider-date").slider("values", 1));
-});
-
-$(function () {
+    
+    // Create range slider for time
     $("#slider-time").slider({
         range: true,
         min: 00,
@@ -110,18 +110,14 @@ $(function () {
             showInfo(filtered);
         }
     });
-});
 
-$(function () {
     $('#country_filter').on('change', function () {
         if (reset) {
             return;
         }
         processCountryFilter(this.value);
     });
-});
 
-$(function () {
     $("#clear_filters").click(function () {
         reset = true;
         $("#shape_filter").val("All").change();
@@ -141,5 +137,14 @@ $(function () {
         filtered = applyGobalFilters(encounters);
         showInfo(filtered);
 
+    });
+
+    $("#toggle_filters").click(function () {
+        const display = $("#filter_section").css("display");
+        if(display === "none") {
+            $("#filter_section").css("display","flex");
+        } else {
+            $("#filter_section").css("display","none");
+        }
     });
 });

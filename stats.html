@@ -63,7 +63,11 @@
 
 
     <main class="main-stats">
-        <section class="sidenav">
+        <button class="button-filters" id="toggle_filters">
+            <span>Toggle Filters</span>
+            <i class="fas fa-filter"></i>
+        </button>
+        <section class="sidenav" id="filter_section">
             <span>Shape</span>
             <select id="shape_filter">
                 <option>All</option>
@@ -95,7 +99,8 @@
                     <div class="card-plot-header">
                         <h3>Encounter Duration</h3>
                         <i class="far fa-lg fa-question-circle tooltip">
-                            <span class="tooltiptext">This graph shows the relation between sightings and the duration of the sighting. You can put mouse hover for more information.</span>
+                            <span class="tooltiptext">This graph shows the relation between sightings and the duration
+                                of the sighting. You can put mouse hover for more information.</span>
                         </i>
                     </div>
 
@@ -104,7 +109,8 @@
                     <div class="card-plot-header">
                         <h3>Shapes</h3>
                         <i class="far fa-lg fa-question-circle tooltip">
-                            <span class="tooltiptext">This donut chart gives the information about shapes reported on sightings. You can put mouse hover for more detailed information.</span>
+                            <span class="tooltiptext">This donut chart gives the information about shapes reported on
+                                sightings. You can put mouse hover for more detailed information.</span>
                         </i>
                     </div>
                 </article>
@@ -112,7 +118,8 @@
                     <div class="card-plot-header">
                         <h3>Most Common Words</h3>
                         <i class="far fa-lg fa-question-circle tooltip">
-                            <span class="tooltiptext">This wordcloud represents the most common words when people give description about the sightings. If you apply filters it also updates.</span>
+                            <span class="tooltiptext">This wordcloud represents the most common words when people give
+                                description about the sightings. If you apply filters it also updates.</span>
                         </i>
                     </div>
                 </article>
@@ -120,7 +127,8 @@
                     <div class="card-plot-header">
                         <h3>Sightings Per Year</h3>
                         <i class="far fa-lg fa-question-circle tooltip">
-                            <span class="tooltiptext">This line chart show the information about sightings reported per year. You can put mouse hover for more detailed information.</span>
+                            <span class="tooltiptext">This line chart show the information about sightings reported per
+                                year. You can put mouse hover for more detailed information.</span>
                         </i>
                     </div>
                 </article>
@@ -128,7 +136,8 @@
                     <div class="card-plot-header">
                         <h3>Sightings Per Hour</h3>
                         <i class="far fa-lg fa-question-circle tooltip">
-                            <span class="tooltiptext">This histogram gives the information related to the hour of the sightings. You can put mouse hover for more detailed information.</span>
+                            <span class="tooltiptext">This histogram gives the information related to the hour of the
+                                sightings. You can put mouse hover for more detailed information.</span>
                         </i>
                     </div>
                 </article>
