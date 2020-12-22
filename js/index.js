@@ -3,7 +3,7 @@ let topShapes = new Map();
 let countries = new Map();
 let totalSightings = 0;
 
-d3.csv("/data/complete.csv").then(function (data) {
+d3.csv("data/complete.csv").then(function (data) {
     data.forEach(function (d) {
         if (topCountries.has(d.country)) {
             topCountries.set(d.country, topCountries.get(d.country) + 1);
@@ -19,7 +19,7 @@ d3.csv("/data/complete.csv").then(function (data) {
     });
 
     // Get country corresponding name by codename (e.g. US)
-    d3.csv("/data/countries.csv").then(function (data) {
+    d3.csv("data/countries.csv").then(function (data) {
         data.forEach(function (d) {
             countries.set(d.Code.toLowerCase(), d.Name);
         });

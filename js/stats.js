@@ -1,8 +1,8 @@
-d3.json("/data/shapeGroups.json").then(data => {
+d3.json("data/shapeGroups.json").then(data => {
     createShapeFilters("shape_filter", data);
 });
 
-d3.csv("/data/countries.csv").then(function (data) {
+d3.csv("data/countries.csv").then(function (data) {
     let filter = document.getElementById('country_filter');
     data.forEach(function (d) {
         // Add options to select on html
@@ -21,7 +21,7 @@ let timeFilter = [0, 24];
 let countryFilter = "All";
 
 
-d3.csv("/data/data_with_countries.csv").then(data => {
+d3.csv("data/data_with_countries.csv").then(data => {
     data.forEach(row => {
         const duration = parseInt(row["duration (seconds)"]);
         const shape = row.shape;
@@ -287,7 +287,7 @@ function wordCloudDescription(data) {
 
     let allWords = new Map();
 
-    d3.json("/data/stopwords.json").then(d0 => {
+    d3.json("data/stopwords.json").then(d0 => {
         const stopWords = new Set(d0);
 
         data.forEach(d => {

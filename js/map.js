@@ -12,12 +12,12 @@ let countries = new Map();
 var mymap;
 
 // Get country corresponding name by codename (e.g. US)
-d3.json("/data/shapeGroups.json").then(data => {
+d3.json("data/shapeGroups.json").then(data => {
   createShapeFilters("shape_filter", data);
 });
 
 
-d3.csv("/data/countries.csv").then(function (data) {
+d3.csv("data/countries.csv").then(function (data) {
   let filter = document.getElementById('country_filter');
   data.forEach(function (d) {
     countries.set(d.Code.toLowerCase(), d.Name);
@@ -75,7 +75,7 @@ window.onload = function () {
 
   // Map spin loading
   mymap.spin(true);
-  d3.csv("/data/data_with_countries.csv").then(function (data) {
+  d3.csv("data/data_with_countries.csv").then(function (data) {
     data.forEach(function (d) {
       // Create sighting object
       const [date, time] = d.datetime.split(" ")
@@ -118,7 +118,7 @@ function createMarker(d) {
     "<b>City: </b>" + d.city + "<br>" +
     "<b>Country: </b>" + countries.get(d.country) + "<br>" +
     "<b>Shape: </b>" + d.shape + "<br>" +
-    "<b>Duration: </b>" + d.duration + "<br>" +
+    "<b>Duration(s): </b>" + d.duration + "<br>" +
     "<b>Description: </b>" + d.comments + "<br>";
   marker.data.icon = myIcon;
   return marker;
